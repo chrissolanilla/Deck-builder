@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3wms31nyyw6l"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cdwsq"]
+size = Vector3(0.7, 1, 0.05)
+
+[node name="world_card_scene" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_cdwsq")
