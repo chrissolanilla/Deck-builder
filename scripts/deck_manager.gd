@@ -26,3 +26,6 @@ func create3DCard(metadata: CardMetaData):
 	var arena = get_node("res://scenes/arena.tscn")
 	arena.add_child(card_scene) #this will spawn a random floating card in the arena
 	return card_scene
+
+func saveDeck(deck: Array):
+	self.deck = deck

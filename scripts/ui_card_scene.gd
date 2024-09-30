@@ -7,6 +7,11 @@ var is_hovered: bool = false
 
 signal card_selected
 signal card_dragged
+signal card_hovered(card_data : CardMetaData)
+signal card_hovered_exit()
+
+var card_metadata: CardMetaData
+
 
 func _ready() -> void:
 	self.connect("mouse_entered", Callable(self, "_on_mouse_hovered"))
@@ -31,6 +36,7 @@ func _process(delta: float) -> void:
 func setupCard(metadata: CardMetaData):
 	$CardName.text = metadata.card_name
 	$CardPortrait.texture = metadata.card_portrait
+	card_metadata = metadata
 	#resize root to cardPortrait
 	if metadata.card_portrait:
 		print("root size before:  " , self.get_rect().size)
@@ -46,9 +52,11 @@ func setupCard(metadata: CardMetaData):
 func _on_mouse_hovered() -> void:
 	is_hovered = true
 	print("Mouse is over the card")
+	emit_signal("card_hovered", card_metadata)
 	# TODO: add visual effects on hover or something
 
 func _on_mouse_exited() -> void:
 	is_hovered = false
 	print("Mouse exited the card")
+	emit_signal("card_hovered_exit")
 	# TODO: remove visual effects
