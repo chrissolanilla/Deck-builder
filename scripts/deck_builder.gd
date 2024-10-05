@@ -2,14 +2,14 @@ extends Control
 
 var available_cards: Array[CardMetaData] = []
 var deck: Array[CardMetaData] = []
-var gridContainer
+var gridContainer: Node
 # Path to save the deck
 var deck_save_path = "user://deck_data.json"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
-	var gridContainer = $ScrollContainer/MarginContainer/GridContainer
+
+	gridContainer = $ScrollContainer/MarginContainer/GridContainer
 	# Load the cards as usual
 	loadAvailableCards()
 
@@ -42,16 +42,20 @@ func createUICard(card_data: CardMetaData):
 	var instance = card_scene.instantiate()
 	instance.setupCard(card_data)
 	instance.connect("card_selected", Callable(self, "_on_card_selected").bind(card_data))
-	instance.connect("card_dragged", Callable(self, "_on_card_dragged").bind(card_data))
+	instance.connect("card_dragged", Callable(self, "_on_card_dragged")) #do not use .bind(card_data) here
 	return instance
 
 func _on_card_selected(card_data: CardMetaData):
 	deck.append(card_data)
 	print("Added card: %s" % card_data.card_name)
 
+func _on_card_dragged(card_data: CardMetaData, mouse_pos: Vector2):
+	# deck.erase(card_data)
+	print("dragging card: %s and the mouse pos is %s" % [card_data.card_name, mouse_pos])
+
 func save_deck():
 	print("Deck saved (not really implemented yet): %s" % deck)
-	
+
 func _on_card_hovered(metadata : CardMetaData):
 	$BottomPanel/CardTitle.text = metadata.card_name
 	$BottomPanel/CardDescription.text = metadata.description

@@ -27,5 +27,5 @@ func create3DCard(metadata: CardMetaData):
 	arena.add_child(card_scene) #this will spawn a random floating card in the arena
 	return card_scene
 
-func saveDeck(deck: Array):
-	self.deck = deck
+func saveDeck(param_deck: Array):
+	self.deck = param_deck

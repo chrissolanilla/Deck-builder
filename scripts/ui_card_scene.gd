@@ -4,7 +4,7 @@ extends BaseCard
 var scaleMultiplier:float = 0.34
 var is_dragging: bool = false
 var is_hovered: bool = false
-
+#ignore warnings for here?
 signal card_selected
 signal card_dragged
 signal card_hovered(card_data : CardMetaData)
@@ -26,29 +26,29 @@ func _input(event):
 				is_dragging = true
 			else:
 				is_dragging = false # stop draggin when released
-		
-func _process(delta: float) -> void:
+
+func _process(_delta: float) -> void:
 	if is_dragging:
 		var mouse_pos = get_viewport().get_mouse_position()
 		self.global_position = mouse_pos # follow mouse pos
-		emit_signal("card_dragged", mouse_pos)
-		
-func setupCard(metadata: CardMetaData):
-	$CardName.text = metadata.card_name
-	$CardPortrait.texture = metadata.card_portrait
-	card_metadata = metadata
+		emit_signal("card_dragged", card_metadata, mouse_pos)
+
+func setupCard(param_metadata: CardMetaData):
+	$CardName.text = param_metadata.card_name
+	$CardPortrait.texture = param_metadata.card_portrait
+	card_metadata = param_metadata
 	#resize root to cardPortrait
-	if metadata.card_portrait:
+	if param_metadata.card_portrait:
 		print("root size before:  " , self.get_rect().size)
 		var texture_size = $CardPortrait.texture.get_size()
 		var scaled_size = texture_size * scaleMultiplier
-		
+
 		self.set_deferred("set_custom_minimum_size", scaled_size)
 		self.set_size(scaled_size)
 		#scale it down by 0.34 on x and y
 		print("Texture size: ", texture_size)
 		print("root size is now " , self.get_rect().size)
-		
+
 func _on_mouse_hovered() -> void:
 	is_hovered = true
 	print("Mouse is over the card")
