@@ -3,12 +3,13 @@ extends Control
 var available_cards: Array[CardMetaData] = []
 var deck: Array[CardMetaData] = []
 var gridContainer: Node
+var mainDeckGridContainer: Node
 # Path to save the deck
 var deck_save_path = "user://deck_data.json"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-
+	mainDeckGridContainer = $MainDeckList/ScrollContainer/MarginContainer/GridContainer
 	gridContainer = $RightPanel/SearchGrid/ScrollContainer/MarginContainer/GridContainer
 	# Load the cards as usual
 	loadAvailableCards()
@@ -48,8 +49,21 @@ func createUICard(card_data: CardMetaData):
 
 func _on_card_selected(card_data: CardMetaData):
 	deck.append(card_data)
+	var deckCard = createUICard(card_data)
+	mainDeckGridContainer.add_child(deckCard)
+	#add singals for hover effects and to remove it 
+	deckCard.connect("gui_input", Callable(self, "_on_deck_card_gui_input").bind(deckCard, card_data))
+	deckCard.connect("card_hovered", Callable(self, "_on_card_hovered"))
+	deckCard.connect("card_hovered_exit", Callable(self, "_on_card_hovered_exit"))
 	print("Added card: %s" % card_data.card_name)
 
+#signal function to handle right-click to remove card from deck
+func _on_deck_card_gui_input(event: InputEvent, card_instance: Control, card_data: CardMetaData):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+		deck.erase(card_data)
+		print("Removed card: %s" % card_data.card_name)
+		card_instance.queue_free()
+		
 func _on_card_dragged(card_data: CardMetaData, mouse_pos: Vector2):
 	# deck.erase(card_data)
 	print("dragging card: %s and the mouse pos is %s" % [card_data.card_name, mouse_pos])

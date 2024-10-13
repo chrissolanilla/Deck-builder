@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://o3vp4b2gu0gy"]
+[gd_scene load_steps=10 format=3 uid="uid://o3vp4b2gu0gy"]
 
 [ext_resource type="Script" path="res://scripts/deck_builder.gd" id="1_pr8jt"]
 
@@ -12,6 +12,19 @@ texture = SubResource("CanvasTexture_0gso2")
 modulate_color = Color(0.713726, 0.713726, 1, 1)
 
 [sub_resource type="Theme" id="Theme_l5jp8"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_smhda"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c65e3"]
+texture = SubResource("CanvasTexture_smhda")
+modulate_color = Color(0.114181, 0.000173259, 0.286428, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_6f68y"]
+specular_color = Color(0.462745, 1, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_co05c"]
+texture = SubResource("CanvasTexture_6f68y")
+modulate_color = Color(0.477273, 0.564988, 0.726278, 1)
 
 [node name="DeckBuilder" type="Control"]
 layout_mode = 3
@@ -82,7 +95,7 @@ columns = 3
 layout_mode = 0
 offset_left = -960.0
 offset_top = -540.0
-offset_right = 391.0
+offset_right = 394.0
 offset_bottom = -444.0
 
 [node name="BottomPanel" type="Panel" parent="."]
@@ -98,13 +111,14 @@ offset_left = -960.0
 offset_top = -444.0
 offset_right = -572.0
 offset_bottom = 354.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_c65e3")
 
 [node name="CardPreview" type="Panel" parent="LeftPanel"]
 layout_mode = 0
 offset_left = 30.0
-offset_top = -3.0
+offset_top = 12.0
 offset_right = 346.0
-offset_bottom = 414.0
+offset_bottom = 429.0
 
 [node name="TextureRect" type="TextureRect" parent="LeftPanel/CardPreview"]
 layout_mode = 1
@@ -177,3 +191,49 @@ offset_right = 346.0
 offset_bottom = -467.0
 text = "Clear Deck
 "
+
+[node name="MainDeckList" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -570.0
+offset_top = -442.0
+offset_right = 392.0
+offset_bottom = 352.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_co05c")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainDeckList"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.544
+anchor_right = 0.507
+anchor_bottom = 0.544
+offset_left = -456.0
+offset_top = -418.936
+offset_right = 5055.27
+offset_bottom = 4129.06
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.168, 0.168)
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainDeckList/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 558
+theme_override_constants/margin_bottom = 626
+
+[node name="GridContainer" type="GridContainer" parent="MainDeckList/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+theme = SubResource("Theme_l5jp8")
+theme_override_constants/h_separation = 678
+theme_override_constants/v_separation = 1020
+columns = 8
