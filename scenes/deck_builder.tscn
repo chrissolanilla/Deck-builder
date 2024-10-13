@@ -237,3 +237,12 @@ theme = SubResource("Theme_l5jp8")
 theme_override_constants/h_separation = 678
 theme_override_constants/v_separation = 1020
 columns = 8
+
+[node name="DeckTitle" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = -869.0
+offset_top = -497.0
+offset_right = -461.0
+offset_bottom = -435.0
+theme_override_font_sizes/normal_font_size = 31
+text = "Editing Deck: XXXXXX"
