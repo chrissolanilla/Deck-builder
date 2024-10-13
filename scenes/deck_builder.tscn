@@ -1,6 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://o3vp4b2gu0gy"]
+[gd_scene load_steps=6 format=3 uid="uid://o3vp4b2gu0gy"]
 
 [ext_resource type="Script" path="res://scripts/deck_builder.gd" id="1_pr8jt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qxdqs"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_0gso2"]
+specular_color = Color(0.765803, 0.969781, 0.134909, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tawgg"]
+texture = SubResource("CanvasTexture_0gso2")
+modulate_color = Color(0.713726, 0.713726, 1, 1)
 
 [sub_resource type="Theme" id="Theme_l5jp8"]
 
@@ -15,22 +24,52 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pr8jt")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="RightPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = -915.0
-offset_top = -447.0
-offset_right = 2620.0
-offset_bottom = 1909.0
-scale = Vector2(0.34, 0.34)
+offset_left = 394.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="SearchGrid" type="Panel" parent="RightPanel"]
+material = SubResource("CanvasItemMaterial_qxdqs")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -448.0
+offset_right = 276.0
+offset_bottom = 448.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_tawgg")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightPanel/SearchGrid"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.544
+anchor_right = 0.507
+anchor_bottom = 0.544
+offset_left = -296.0
+offset_top = -419.424
+offset_right = 3217.66
+offset_bottom = 4396.58
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.168, 0.168)
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RightPanel/SearchGrid/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 558
 theme_override_constants/margin_bottom = 626
 
-[node name="GridContainer" type="GridContainer" parent="ScrollContainer/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="RightPanel/SearchGrid/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 2
@@ -39,76 +78,102 @@ theme_override_constants/h_separation = 1203
 theme_override_constants/v_separation = 1620
 columns = 3
 
-[node name="RightPanel" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 300.0
-offset_top = -540.0
-offset_right = 960.0
-offset_bottom = 540.0
-
 [node name="TopPanel" type="Panel" parent="."]
 layout_mode = 0
 offset_left = -960.0
 offset_top = -540.0
-offset_right = 300.0
+offset_right = 391.0
 offset_bottom = -444.0
 
 [node name="BottomPanel" type="Panel" parent="."]
 layout_mode = 0
 offset_left = -960.0
 offset_top = 354.0
-offset_right = 300.0
+offset_right = 396.0
 offset_bottom = 540.0
 
-[node name="CardTitle" type="TextEdit" parent="BottomPanel"]
+[node name="LeftPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -960.0
+offset_top = -444.0
+offset_right = -572.0
+offset_bottom = 354.0
+
+[node name="CardPreview" type="Panel" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = -3.0
+offset_right = 346.0
+offset_bottom = 414.0
+
+[node name="TextureRect" type="TextureRect" parent="LeftPanel/CardPreview"]
 layout_mode = 1
-offset_right = 385.0
-offset_bottom = 63.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -198.0
+offset_right = 150.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+
+[node name="CardTitle" type="TextEdit" parent="LeftPanel"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 448.0
+offset_right = 369.0
+offset_bottom = 511.0
 placeholder_text = "Hover over a card to view title
 
 "
 editable = false
 
-[node name="CardEffect" type="TextEdit" parent="BottomPanel"]
+[node name="CardEffect" type="TextEdit" parent="LeftPanel"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -29.0
-offset_right = 432.0
-offset_bottom = 91.0
+offset_left = 4.0
+offset_top = 114.0
+offset_right = 380.0
+offset_bottom = 276.0
 grow_vertical = 2
 placeholder_text = "Hover over a card to view effect"
 editable = false
 wrap_mode = 1
 
-[node name="CardDescription" type="TextEdit" parent="BottomPanel"]
+[node name="CardDescription" type="TextEdit" parent="LeftPanel"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 435.0
-offset_top = -29.0
-offset_right = 867.0
-offset_bottom = 91.0
+offset_left = 3.0
+offset_top = 275.0
+offset_right = 378.0
+offset_bottom = 395.0
 grow_vertical = 2
 placeholder_text = "Hover over a card to view effect"
 editable = false
 wrap_mode = 1
-
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 404.0
-offset_top = -3.0
-offset_right = 495.0
-offset_bottom = 28.0
-text = "Clear Deck
-"
 
 [node name="SaveButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 300.0
-offset_right = 387.0
-offset_bottom = 31.0
+offset_left = 154.0
+offset_top = -498.0
+offset_right = 241.0
+offset_bottom = -467.0
 text = "Save Deck
+"
+
+[node name="ClearDeckButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 255.0
+offset_top = -498.0
+offset_right = 346.0
+offset_bottom = -467.0
+text = "Clear Deck
 "

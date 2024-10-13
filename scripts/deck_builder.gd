@@ -9,10 +9,11 @@ var deck_save_path = "user://deck_data.json"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 
-	gridContainer = $ScrollContainer/MarginContainer/GridContainer
+	gridContainer = $RightPanel/SearchGrid/ScrollContainer/MarginContainer/GridContainer
 	# Load the cards as usual
 	loadAvailableCards()
 
+#fibbonacci indentation would go crazy here
 func loadAvailableCards():
 	var dir = DirAccess.open("res://assets/cards/MetaData")
 	if dir:
@@ -28,7 +29,7 @@ func loadAvailableCards():
 					if card_data is CardMetaData:
 						available_cards.append(card_data)
 						var ui_card = createUICard(card_data)
-						$ScrollContainer/MarginContainer/GridContainer.add_child(ui_card)
+						gridContainer.add_child(ui_card)
 						ui_card.connect("card_hovered", Callable(self, "_on_card_hovered"))
 						ui_card.connect("card_hovered_exit", Callable(self, "_on_card_hovered_exit"))
 						print("Adding child: %s" % card_data.card_name)
@@ -57,6 +58,9 @@ func save_deck():
 	print("Deck saved (not really implemented yet): %s" % deck)
 
 func _on_card_hovered(metadata : CardMetaData):
-	$BottomPanel/CardTitle.text = metadata.card_name
-	$BottomPanel/CardDescription.text = metadata.description
-	$BottomPanel/CardEffect.text = metadata.effect
+	$LeftPanel/CardTitle.text = metadata.card_name
+	$LeftPanel/CardDescription.text = metadata.description
+	$LeftPanel/CardEffect.text = metadata.effect
+	#add a card scene or maybe just an image sprite to the $CardPreview
+	$LeftPanel/CardPreview/TextureRect.texture = metadata.card_portrait
+	

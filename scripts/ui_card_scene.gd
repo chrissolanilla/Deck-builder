@@ -11,7 +11,7 @@ signal card_hovered(card_data : CardMetaData)
 signal card_hovered_exit()
 
 var card_metadata: CardMetaData
-
+var drag_card_instance: Control
 
 func _ready() -> void:
 	self.connect("mouse_entered", Callable(self, "_on_mouse_hovered"))
@@ -24,13 +24,23 @@ func _input(event):
 			if event.pressed:
 				emit_signal("card_selected") # emit when card clicked
 				is_dragging = true
+				if drag_card_instance:
+					drag_card_instance = ui_card_scene.instantiate() as Control
+					drag_card_instance.setupCard(card_metadata)
+					drag_card_instance.scale = Vector2(0.75, 0.75)
+					drag_card_instance.modulate.a = 0.75
+					get_parent().add_child(drag_card_instance)
 			else:
 				is_dragging = false # stop draggin when released
+				if drag_card_instance:
+					drag_card_instance.queue_free()
+					drag_card_instance = null
 
 func _process(_delta: float) -> void:
-	if is_dragging:
+	if is_dragging and drag_card_instance:
 		var mouse_pos = get_viewport().get_mouse_position()
 		self.global_position = mouse_pos # follow mouse pos
+		drag_card_instance.global_position = mouse_pos
 		emit_signal("card_dragged", card_metadata, mouse_pos)
 
 func setupCard(param_metadata: CardMetaData):
