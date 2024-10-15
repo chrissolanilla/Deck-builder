@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3ed5jpbs4f4l"]
+[gd_scene load_steps=7 format=3 uid="uid://d3ed5jpbs4f4l"]
 
 [ext_resource type="Script" path="res://scripts/player_script.gd" id="1_r5dda"]
+[ext_resource type="Texture2D" uid="uid://cgv1g4l8tcdnd" path="res://assets/cards/portraits/desert_world.png" id="2_7jplg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qrt03"]
 
@@ -38,3 +39,39 @@ shape = SubResource("BoxShape3D_dqds2")
 transform = Transform3D(64, 0, 0, 0, 1, 0, 0, 0, 64, 0, 0, 0)
 mesh = SubResource("BoxMesh_wl0a1")
 skeleton = NodePath("../..")
+
+[node name="CardContainer" type="CenterContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -204.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CardContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CardContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_7jplg")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="CardContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_7jplg")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="CardContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_7jplg")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="CardContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_7jplg")
+expand_mode = 3
