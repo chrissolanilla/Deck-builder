@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgxqu5tafey62"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_rdt4w"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenuContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+script = ExtResource("1_rdt4w")
+
+[node name="PlayButton" type="Button" parent="CenterContainer/MainMenuContainer"]
+layout_mode = 2
+text = "Play game"
+
+[node name="DeckButton" type="Button" parent="CenterContainer/MainMenuContainer"]
+layout_mode = 2
+text = "Open deck builder"
