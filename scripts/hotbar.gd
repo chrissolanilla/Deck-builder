@@ -11,7 +11,7 @@ func _ready():
 	_load_textures()
 
 	# Safely find the CardContainer/HBoxContainer
-	var card_container = $CardContainer/HBoxContainer
+	var card_container = $HBoxContainer
 	
 	# Check if card_container is valid
 	if card_container == null:
@@ -24,13 +24,18 @@ func _ready():
 			cards.append(card)  # Store each card in the array
 			card.connect("gui_input", _on_card_input)
 	
+	# Randomly assign textures to the cards
+	_assign_random_textures()
 
 # Function to load textures from the portraits folder
 func _load_textures() -> void:
 	var texture_paths = [
+		"res://assets/cards/portraits/Creamius_Pantaloonius.png",
+		"res://assets/cards/portraits/desert_world.png",
 		"res://assets/cards/portraits/immortal_king.png",
 		"res://assets/cards/portraits/team_cream.png"
 	]
+	
 	for path in texture_paths:
 		var texture = load(path)
 		if texture:
@@ -40,12 +45,9 @@ func _load_textures() -> void:
 
 # Function to randomly assign textures to the cards
 func _assign_random_textures() -> void:
-	print("ASSIGN RANDOM")
 	for card in cards:
-		card.texture = null  # Clear any existing texture
 		var random_texture = textures[randi() % textures.size()]
-		card.texture = random_texture  # Forcefully assign a random texture to the TextureRect
-		print("Assigned texture to card: ", random_texture.resource_path)
+		card.texture = random_texture  # Assign a random texture to the TextureRect
 
 # Function to handle input when a card is clicked
 func _on_card_input(event: InputEvent) -> void:
@@ -65,8 +67,7 @@ func _input(event: InputEvent) -> void:
 # Function to select a card by its index
 func select_card_by_index(index: int) -> void:
 	if index >= 0 and index < cards.size():
-		_assign_random_textures()
 		var selected_card = cards[index]
-		#print("Card selected by key press: ", selected_card.name)  # or handle selection logic
+		print("Card selected by key press: ", selected_card.name)  # or handle selection logic
 	else:
 		print("Invalid card index")

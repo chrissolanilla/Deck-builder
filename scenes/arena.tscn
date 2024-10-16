@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3ed5jpbs4f4l"]
+[gd_scene load_steps=8 format=3 uid="uid://d3ed5jpbs4f4l"]
 
 [ext_resource type="Script" path="res://scripts/player_script.gd" id="1_r5dda"]
 [ext_resource type="Texture2D" uid="uid://cgv1g4l8tcdnd" path="res://assets/cards/portraits/desert_world.png" id="2_7jplg"]
+[ext_resource type="Script" path="res://scripts/hotbar.gd" id="2_fs1gs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qrt03"]
 
@@ -48,6 +49,7 @@ anchor_bottom = 1.0
 offset_top = -204.0
 grow_horizontal = 2
 grow_vertical = 0
+script = ExtResource("2_fs1gs")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CardContainer"]
 layout_mode = 2
@@ -55,7 +57,6 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="CardContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
-texture = ExtResource("2_7jplg")
 expand_mode = 3
 
 [node name="TextureRect2" type="TextureRect" parent="CardContainer/HBoxContainer"]
