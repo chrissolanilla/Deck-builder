@@ -10,3 +10,6 @@ class_name CardMetaData
 @export var archetype: String
 @export var element: String
 @export var effect: String
+@export var level: int
+@export var file_path: String
+@export var card_type: String
