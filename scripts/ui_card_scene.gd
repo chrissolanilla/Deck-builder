@@ -1,72 +1,72 @@
-extends Control  # or your relevant base class
+extends BaseCard
 
-# Array to store references to the cards
-var cards = []
-# Array to store the loaded textures
-var textures = []
+@export var ui_card_scene: PackedScene #not sure if this line is needed
+var scaleMultiplier:float = 0.34
+var is_dragging: bool = false
+var is_hovered: bool = false
+#ignore warnings for here?
+signal card_selected
+signal card_dragged
+signal card_hovered(card_data : CardMetaData)
+signal card_hovered_exit()
 
-# Function to handle card setup
-func _ready():
-	# Load all textures from the portraits folder
-	_load_textures()
+var card_metadata: CardMetaData
+var drag_card_instance: Control
 
-	# Safely find the CardContainer/HBoxContainer
-	var card_container = $CardContainer/HBoxContainer
-	
-	# Check if card_container is valid
-	if card_container == null:
-		print("Card container not found!")
-		return
-	
-	# Iterate over all TextureRect children (cards) in the container
-	for card in card_container.get_children():
-		if card is TextureRect:
-			cards.append(card)  # Store each card in the array
-			card.connect("gui_input", _on_card_input)
-	
+func _ready() -> void:
+	self.connect("mouse_entered", Callable(self, "_on_mouse_hovered"))
+	self.connect("mouse_exited", Callable(self, "_on_mouse_exited"))
+	self.mouse_filter = Control.MOUSE_FILTER_PASS
 
-# Function to load textures from the portraits folder
-func _load_textures() -> void:
-	var texture_paths = [
-		"res://assets/cards/portraits/immortal_king.png",
-		"res://assets/cards/portraits/team_cream.png"
-	]
-	for path in texture_paths:
-		var texture = load(path)
-		if texture:
-			textures.append(texture)
-		else:
-			print("Failed to load texture: ", path)
+func _input(event):
+	if is_hovered:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				emit_signal("card_selected") # emit when card clicked
+				is_dragging = true
+				if drag_card_instance:
+					drag_card_instance = ui_card_scene.instantiate() as Control
+					drag_card_instance.setupCard(card_metadata)
+					drag_card_instance.scale = Vector2(0.75, 0.75)
+					drag_card_instance.modulate.a = 0.75
+					get_parent().add_child(drag_card_instance)
+			else:
+				is_dragging = false # stop draggin when released
+				if drag_card_instance:
+					drag_card_instance.queue_free()
+					drag_card_instance = null
 
-# Function to randomly assign textures to the cards
-func _assign_random_textures() -> void:
-	print("ASSIGN RANDOM")
-	for card in cards:
-		card.texture = null  # Clear any existing texture
-		var random_texture = textures[randi() % textures.size()]
-		card.texture = random_texture  # Forcefully assign a random texture to the TextureRect
-		print("Assigned texture to card: ", random_texture.resource_path)
+func _process(_delta: float) -> void:
+	if is_dragging and drag_card_instance:
+		var mouse_pos = get_viewport().get_mouse_position()
+		self.global_position = mouse_pos # follow mouse pos
+		drag_card_instance.global_position = mouse_pos
+		emit_signal("card_dragged", card_metadata, mouse_pos)
 
-# Function to handle input when a card is clicked
-func _on_card_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		print("Card selected by mouse")
+func setupCard(param_metadata: CardMetaData):
+	$CardName.text = param_metadata.card_name
+	$CardPortrait.texture = param_metadata.card_portrait
+	card_metadata = param_metadata
+	#resize root to cardPortrait
+	if param_metadata.card_portrait:
+		print("root size before:  " , self.get_rect().size)
+		var texture_size = $CardPortrait.texture.get_size()
+		var scaled_size = texture_size * scaleMultiplier
 
-# Function to handle keyboard input
-func _input(event: InputEvent) -> void:
-	# Check if the event is a key press and a number key is pressed
-	if event is InputEventKey and event.pressed:
-		# Handle number keys (1-7)
-		match event.keycode:
-			KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7:
-				var index = event.keycode - KEY_1  # Get index from 0-6
-				select_card_by_index(index)
+		self.set_deferred("set_custom_minimum_size", scaled_size)
+		self.set_size(scaled_size)
+		#scale it down by 0.34 on x and y
+		print("Texture size: ", texture_size)
+		print("root size is now " , self.get_rect().size)
 
-# Function to select a card by its index
-func select_card_by_index(index: int) -> void:
-	if index >= 0 and index < cards.size():
-		_assign_random_textures()
-		var selected_card = cards[index]
-		#print("Card selected by key press: ", selected_card.name)  # or handle selection logic
-	else:
-		print("Invalid card index")
+func _on_mouse_hovered() -> void:
+	is_hovered = true
+	print("Mouse is over the card")
+	emit_signal("card_hovered", card_metadata)
+	# TODO: add visual effects on hover or something
+
+func _on_mouse_exited() -> void:
+	is_hovered = false
+	print("Mouse exited the card")
+	emit_signal("card_hovered_exit")
+	# TODO: remove visual effects
