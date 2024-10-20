@@ -60,11 +60,12 @@ func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_s
 		print("AudioStreamPlayer3D node not found")
 
 	spell_instance.call_deferred("set_transform", Transform3D(spell_instance.transform.basis, player.get_global_transform().origin + player.get_global_transform().basis.z.normalized() * -distance))
-	pass
+	print("start up is ", start_up)
+	if start_up <= 0:
+		print("resolving spell")
+		resolve_spell(player)
 
-func resolve_spell() -> void:
+func resolve_spell(player:CharacterBody3D) -> void:
 	#if the spell was not interupted or countered, actually play it.
+	print("function is not being overriden!")
 	pass
-
-
-# func spawn
