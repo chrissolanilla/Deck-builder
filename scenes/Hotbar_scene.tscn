@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdbh5bs37yimw"]
+
+[ext_resource type="Script" path="res://scripts/hotbar.gd" id="1_74luf"]
+[ext_resource type="Texture2D" uid="uid://2mf6l4kcikje" path="res://assets/cards/portraits/defaultCard(1).png" id="2_gutgc"]
+
+[node name="CardContainer" type="CenterContainer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -204.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_74luf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="slot1" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot2" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot3" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot4" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot5" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot6" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3
+
+[node name="slot7" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_gutgc")
+expand_mode = 3

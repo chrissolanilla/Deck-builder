@@ -1,12 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://d3ed5jpbs4f4l"]
+[gd_scene load_steps=5 format=3 uid="uid://d3ed5jpbs4f4l"]
 
-[ext_resource type="Script" path="res://scripts/player_script.gd" id="1_r5dda"]
-[ext_resource type="Texture2D" uid="uid://cgv1g4l8tcdnd" path="res://assets/cards/portraits/desert_world.png" id="2_7jplg"]
-[ext_resource type="Script" path="res://scripts/hotbar.gd" id="2_fs1gs"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qrt03"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_j86uh"]
+[ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="1_qchvb"]
+[ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="2_bl5w5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dqds2"]
 size = Vector3(64, 1, 64)
@@ -18,18 +13,7 @@ size = Vector3(64, 1, 64)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.753632, 0.578321, -0.312384, 0, 0.475256, 0.879848, 0.657296, -0.663082, 0.358168, 42.054, 30.0631, 17.2842)
 
-[node name="PlayerBody" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2979, 29.2129)
-script = ExtResource("1_r5dda")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBody"]
-shape = SubResource("CapsuleShape3D_qrt03")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerBody"]
-mesh = SubResource("CapsuleMesh_j86uh")
-
-[node name="Camera3D" type="Camera3D" parent="PlayerBody"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.70419, 0)
+[node name="PlayerBody" parent="." instance=ExtResource("1_qchvb")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -41,38 +25,4 @@ transform = Transform3D(64, 0, 0, 0, 1, 0, 0, 0, 64, 0, 0, 0)
 mesh = SubResource("BoxMesh_wl0a1")
 skeleton = NodePath("../..")
 
-[node name="CardContainer" type="CenterContainer" parent="."]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -204.0
-grow_horizontal = 2
-grow_vertical = 0
-script = ExtResource("2_fs1gs")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CardContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="CardContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-expand_mode = 3
-
-[node name="TextureRect2" type="TextureRect" parent="CardContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-texture = ExtResource("2_7jplg")
-expand_mode = 3
-
-[node name="TextureRect3" type="TextureRect" parent="CardContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-texture = ExtResource("2_7jplg")
-expand_mode = 3
-
-[node name="TextureRect4" type="TextureRect" parent="CardContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-texture = ExtResource("2_7jplg")
-expand_mode = 3
+[node name="CardContainer" parent="." instance=ExtResource("2_bl5w5")]
