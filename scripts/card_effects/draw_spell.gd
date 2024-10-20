@@ -3,6 +3,12 @@ extends BaseSpell
 func resolve_spell(player: CharacterBody3D) -> void:
 	# Access the player's deck or hand and draw one card
 	var drawn_card = DeckManager.draw_card()
+	var audio_player = player.get_node("AudioStreamPlayer3D")
+	if audio_player:
+		audio_player.play()
+	else:
+		print("AudioStreamPlayer3D node not found")
+		
 	if drawn_card != null:
 		# Add the drawn card to the player's hand and update the UI
 		player.hand.append(drawn_card)
