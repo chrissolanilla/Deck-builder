@@ -92,19 +92,36 @@ func _input(event: InputEvent) -> void:
 				select_card_by_index(index)
 
 # Function to select a card by its index
+#func select_card_by_index(index: int) -> void:
+	#print(card_container.cards)
+	#print("selected index %s" % index)
+	#if index >= 0 and index < card_container.cards.size():
+		#var selected_card = card_container.cards[index]
+		#if selected_card.card_name == "Rage":
+			#attack *= 2
+			#await get_tree().create_timer(5).timeout
+			#attack /= 2
+		#elif selected_card.card_name == "Heal":
+			#health  += min(health + 30, 100)
+		#elif selected_card.card_name == "Draw":
+			#card_container.cards.append(card_container.card_files[randf_range(0, 4)])
+		#card_container.cards.remove_at(index)
+		#card_container._update_card_visuals()
+	#else:
+		#print("Invalid card index")
+		
 func select_card_by_index(index: int) -> void:
-	print(card_container.cards)
-	print("selected index %s" % index)
 	if index >= 0 and index < card_container.cards.size():
 		var selected_card = card_container.cards[index]
-		if selected_card.card_name == "Rage":
-			attack *= 2
-			await get_tree().create_timer(5).timeout
-			attack /= 2
-		elif selected_card.card_name == "Heal":
-			health  += min(health + 30, 100)
-		elif selected_card.card_name == "Draw":
-			card_container.cards.append(card_container.card_files[randf_range(0, 4)])
+		if selected_card.card_type == "monster":
+			# Load the scarab's script and create an instance
+			var monster_script = load(selected_card.script_path)
+			if monster_script != null:
+				var monster_instance = monster_script.new()
+				monster_instance.setupAttributes(selected_card)
+				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
+				monster_instance.spawnMonster(self, current_scene)
+		# Handle other card types (spells, traps) similarly
 		card_container.cards.remove_at(index)
 		card_container._update_card_visuals()
 	else:

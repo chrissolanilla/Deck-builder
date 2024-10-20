@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct5xnb8mg0f0k"]
+
+[ext_resource type="PackedScene" uid="uid://chiffqod63ivr" path="res://scenes/Spider.blend" id="1_1o82g"]
+
+[node name="Spider2" instance=ExtResource("1_1o82g")]
