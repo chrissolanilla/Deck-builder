@@ -15,11 +15,9 @@ func _physics_process(delta: float) -> void:
 	# Move the scarab randomly
 	var random_direction = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized()
 	var movement_vector = random_direction * move_speed * delta
-
 	# Move in random directions
 	translate(movement_vector)
 	orthonormalize()  # Ensures smooth movement
-
 	# Play walking or idle animations based on movement
 	if random_direction.length() > 0:
 		print("printing walk")

@@ -109,18 +109,31 @@ func _input(event: InputEvent) -> void:
 		#card_container._update_card_visuals()
 	#else:
 		#print("Invalid card index")
-		
+
 func select_card_by_index(index: int) -> void:
 	if index >= 0 and index < card_container.cards.size():
 		var selected_card = card_container.cards[index]
 		if selected_card.card_type == "monster":
 			# Load the scarab's script and create an instance
 			var monster_script = load(selected_card.script_path)
+			print("spell script is", monster_script)
 			if monster_script != null:
 				var monster_instance = monster_script.new()
 				monster_instance.setupAttributes(selected_card)
 				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
 				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.2, 0.2, 0.2))  # the last param is the scale of the monster
+
+		elif selected_card.card_type == "spell":
+			#load the script of the spell and create the instance(sprite) above the players head
+			var spell_script = load(selected_card.script_path)
+			print("spell script is", spell_script)
+			if spell_script == null:
+				return
+			var spell_instance = spell_script.new()
+			spell_instance.setupAttributes(selected_card)
+			var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
+			spell_instance.activate_spell(self, selected_card, current_scene, 5.0, Vector3(1,1, 1))
+
 		# Handle other card types (spells, traps) similarly
 		card_container.cards.remove_at(index)
 		card_container._update_card_visuals()
