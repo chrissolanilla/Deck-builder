@@ -14,4 +14,4 @@ class_name CardMetaData
 @export var file_path: String
 @export var card_type: String
 @export var script_path: String
-@export var model: String
+@export var scene_path: String
