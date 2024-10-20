@@ -8,6 +8,7 @@ var mainDeckGridContainer: Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 
+	$ClearDeckButton.pressed.connect(_on_clear_deck_button_pressed)
 	mainDeckGridContainer = $MainDeckList/ScrollContainer/MarginContainer/GridContainer
 	gridContainer = $RightPanel/SearchGrid/ScrollContainer/MarginContainer/GridContainer
 	# Load the cards as usual into our search results
@@ -17,6 +18,7 @@ func _ready() -> void:
 	print("Our loaded deck is ",  deck)
 	# Connect the save button and bind the deck array
 	$SaveButton.connect("pressed", Callable(self, "_on_save_button_pressed").bind(deck))
+	$TitleScreenButton.pressed.connect(_on_title_screen_button_pressed)
 
 
 #fibbonacci indentation would go crazy here
@@ -137,3 +139,12 @@ func loadCurrentDeck(deckArray: Array) -> Array:
 
 	print("Loaded deck: ",  deckArray)
 	return deckArray
+
+func _on_clear_deck_button_pressed() -> void:
+	deck.clear()
+	for card in mainDeckGridContainer.get_children():
+		card.queue_free()
+	print("cleared deck: ", deck)
+
+func _on_title_screen_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
