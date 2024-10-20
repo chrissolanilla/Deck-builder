@@ -6,14 +6,14 @@ var hand: Array[CardMetaData] = []
 
 func setDeck(newDeck: Array[CardMetaData]) -> void:
 	deck = newDeck
-	
+
 func getDeck() ->Array[CardMetaData]:
 	return self.deck
-	
+
 func setHand(newHand: Array[CardMetaData]) -> void:
 	hand = newHand
 
-func getHand() -> Array[CardMetaData]: 
+func getHand() -> Array[CardMetaData]:
 	return self.hand
 
 func shuffle()-> void:
@@ -22,12 +22,13 @@ func shuffle()-> void:
 func addCardToHand(card: CardMetaData):
 	if deck.has(card):
 		hand.push_back(card)
-	
+
 # Draw a single card from the deck and return it
 func draw_card() -> CardMetaData:
 	if deck.size() > 0:
 		var card_metadata = deck.pop_front()  # Draw the top card from the deck
 		hand.append(card_metadata)  # Add it to the hand
+		print("Drew card: ", card_metadata.card_name)
 		return card_metadata  # Return the card that was drawn
 	else:
 		print("Deck is empty!")
@@ -38,7 +39,7 @@ func createUICard(metadata: CardMetaData):
 	card_scene.setup_card(metadata)
 	add_child(card_scene)
 	return card_scene
-	
+
 func create3DCard(metadata: CardMetaData):
 	var card_scene = preload("res://scenes/world_card_scene.tscn").instance()
 	card_scene.setupCard(metadata)

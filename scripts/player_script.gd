@@ -42,10 +42,14 @@ func _ready() -> void:
 	card_container.cards = hand
 
 #draw every 15 seconds
+# Draw a card every 15 seconds
 func _on_draw_timer_timeout() -> void:
-	print("drawing for turn")
-	hand.append(DeckManager.draw_card())
-	card_container.cards = hand
+	print("Drawing for turn")
+	var drawn_card = DeckManager.draw_card()
+	if drawn_card != null:  # Only append if there's a valid card to draw
+		hand.append(drawn_card)
+		# card_container.cards = hand  # Update the hotbar's cards
+		card_container._update_card_visuals()  # Refresh visuals
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
