@@ -192,6 +192,15 @@ offset_bottom = -467.0
 text = "Clear Deck
 "
 
+[node name="TitleScreenButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 356.0
+offset_top = -498.0
+offset_right = 447.0
+offset_bottom = -467.0
+text = "Go Back To Title Screen
+"
+
 [node name="MainDeckList" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 8
