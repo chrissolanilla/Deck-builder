@@ -16,7 +16,8 @@ func setupAttributes(metadata:CardMetaData) -> void:
 	self.monster_name = metadata.card_name
 	self.scene_path = metadata.scene_path
 
-func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0) -> void:
+#spawn monster with a distance from the player infront of us, and a scale to scale it down(editing the scene didnt chagne it for me ;[
+func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scale: Vector3 = Vector3(1, 1, 1)) -> void:
 	# Load the scene and check if it's a valid PackedScene
 	var monster_scene = load(scene_path)
 	if monster_scene == null:
@@ -32,18 +33,19 @@ func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0) -> v
 		print("Failed to instance monster!")
 		return
 
-	# Position the monster in front of the player
-	var forward = player.get_global_transform().basis.z.normalized() * -1
-	var spawn_position = player.get_global_transform().origin + forward * distance
-	monster.global_transform.origin = spawn_position
-
-	# Add the monster to the scene passed as an argument
+	# Add the monster to the current scene before modifying its transform
 	if current_scene != null:
 		current_scene.add_child(monster)
 		print("Spawned monster: " + monster_name)
 	else:
 		print("No valid scene to spawn the monster!")
+		return
 
+	# Defer setting the transform to avoid the "is_inside_tree()" error
+	monster.call_deferred("set_transform", Transform3D(monster.transform.basis, player.get_global_transform().origin + player.get_global_transform().basis.z.normalized() * -distance))
+
+	# Apply the scale after the monster is added to the scene
+	monster.scale = scale
 
 
 func takeDamage(amount: int) -> void:

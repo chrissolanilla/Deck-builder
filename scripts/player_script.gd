@@ -120,7 +120,7 @@ func select_card_by_index(index: int) -> void:
 				var monster_instance = monster_script.new()
 				monster_instance.setupAttributes(selected_card)
 				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-				monster_instance.spawnMonster(self, current_scene)
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.2, 0.2, 0.2))  # the last param is the scale of the monster
 		# Handle other card types (spells, traps) similarly
 		card_container.cards.remove_at(index)
 		card_container._update_card_visuals()
