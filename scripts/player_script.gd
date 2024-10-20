@@ -3,12 +3,50 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.0010
+const DRAW_INTERVAL = 15
+
 var health = 100
 var attack = 20
 var card_container;
+var deck: Array[CardMetaData]
+var hand: Array[CardMetaData]
+#timer created programatically
+var draw_timer: Timer
+#have a variable that loads the players deck from savegame.data
+
+func _process(_delta: float) -> void:
+	if Input.is_action_pressed("toggleMouse"):
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	card_container = get_parent().get_node("CardContainer")
+	#on ready we load the deck from the game file
+	deck = DeckManager.loadCurrentDeck(deck)  # Correcting the singleton call
+	DeckManager.setDeck(deck)
+	DeckManager.shuffle()
+	#draw 5 cards in the start of the game into the players hud
+	for i in range(5):
+		hand.append(DeckManager.draw_card())
+	DeckManager.setHand(hand)
+	#start a recurring timer to draw a card every 15 seconds
+	draw_timer = Timer.new()
+	add_child(draw_timer)
+	draw_timer.wait_time = DRAW_INTERVAL
+	draw_timer.connect("timeout", Callable(self, "_on_draw_timer_timeout"))
+	draw_timer.start()
+	#set the hand in the hotbar
+	card_container.cards = hand
+
+#draw every 15 seconds
+func _on_draw_timer_timeout() -> void:
+	print("drawing for turn")
+	hand.append(DeckManager.draw_card())
+	card_container.cards = hand
+
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		_head_look(-event.relative)
@@ -51,6 +89,7 @@ func _input(event: InputEvent) -> void:
 
 # Function to select a card by its index
 func select_card_by_index(index: int) -> void:
+	print(card_container.cards)
 	print("selected index %s" % index)
 	if index >= 0 and index < card_container.cards.size():
 		var selected_card = card_container.cards[index]
@@ -62,9 +101,7 @@ func select_card_by_index(index: int) -> void:
 			health  += min(health + 30, 100)
 		elif selected_card.card_name == "Draw":
 			card_container.cards.append(card_container.card_files[randf_range(0, 4)])
-			print(card_container.cards)
 		card_container.cards.remove_at(index)
 		card_container._update_card_visuals()
 	else:
 		print("Invalid card index")
-	
