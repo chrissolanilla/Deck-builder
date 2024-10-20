@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbe7g7b8ab0s6"]
+
+[ext_resource type="Texture2D" uid="uid://by5bsngvrio2k" path="res://assets/cards/portraits/Cursed_Scarab.png" id="2_aswuq"]
+[ext_resource type="AudioStream" uid="uid://b6qn3pa71n6bm" path="res://assets/sounds/EffectActivate.mp3" id="2_lkpuo"]
+
+[node name="WorldSpellCard" type="Node3D"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_lkpuo")
+autoplay = true
+
+[node name="backside" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0577083)
+texture = ExtResource("2_aswuq")
+
+[node name="front" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0656927)
+flip_h = true
+texture = ExtResource("2_aswuq")

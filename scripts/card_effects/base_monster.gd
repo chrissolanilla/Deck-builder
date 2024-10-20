@@ -26,13 +26,11 @@ func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scal
 	if not monster_scene is PackedScene:
 		print("Loaded resource is not a valid PackedScene!")
 		return
-
 	# Instance the monster from the PackedScene
 	var monster = monster_scene.instantiate()
 	if monster == null:
 		print("Failed to instance monster!")
 		return
-
 	# Add the monster to the current scene before modifying its transform
 	if current_scene != null:
 		current_scene.add_child(monster)
@@ -41,6 +39,7 @@ func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scal
 		print("No valid scene to spawn the monster!")
 		return
 
+	print("our attributes for this monster are", level, attack, defense)
 	# Defer setting the transform to avoid the "is_inside_tree()" error
 	monster.call_deferred("set_transform", Transform3D(monster.transform.basis, player.get_global_transform().origin + player.get_global_transform().basis.z.normalized() * -distance))
 
