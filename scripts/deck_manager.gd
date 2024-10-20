@@ -3,6 +3,11 @@ class_name DeckManger
 #to use getters and setters or just pass in funcitons ;/
 var deck: Array[CardMetaData] = []
 var hand: Array[CardMetaData] = []
+var is_spell_active: bool = false
+var countdown_time: float = 0
+var current_spell: BaseSpell
+var playerLocal: CharacterBody3D
+
 
 func setDeck(newDeck: Array[CardMetaData]) -> void:
 	deck = newDeck
@@ -72,3 +77,29 @@ func loadCurrentDeck(deckArray: Array) -> Array:
 
 	print("Loaded deck: ",  deckArray)
 	return deckArray
+
+
+func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_time: float) -> void:
+	if is_spell_active:
+		print("a spell is alreadyactive")
+		return
+	print("starting countdown for spell: ")
+	is_spell_active = true
+	countdown_time = start_up_time
+	#keep track of the curernt spell?
+	current_spell = currentSpell
+	current_spell.playerLocal = player
+	set_process(true)
+
+
+func _process(delta: float) -> void:
+	if is_spell_active and countdown_time > 0:
+		countdown_time -= delta
+		print("Time remaining for spell to resolve: ", countdown_time)
+
+		if countdown_time <= 0:
+			print("Resolving spell: ", current_spell.spell_name)
+			is_spell_active = false
+			set_process(false)  # Disable process
+			current_spell.resolve_spell(current_spell.playerLocal)
+			current_spell.queue_free()  # Free the spell instance after it resolves
