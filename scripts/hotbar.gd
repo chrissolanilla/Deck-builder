@@ -1,24 +1,18 @@
 extends Control  # or your relevant base class
-
 # Array to store references to the cards
 var cards = []
 # Array to store the loaded textures
 var textures = []
-
 var card_files = [
 		load("res://assets/cards/MetaData/Draw.tres"),
 		load("res://assets/cards/MetaData/Heal.tres"),
 		load("res://assets/cards/MetaData/Weaken.tres"),
 		load("res://assets/cards/MetaData/Rage.tres"),
 ]
-
 # Function to handle card setup
 func _ready():
-
 	# Safely find the CardContainer/HBoxContainer
 	var card_container = $HBoxContainer
-
-
 	for card_data in card_files:
 		cards.append(card_data)
 	_update_card_visuals()
