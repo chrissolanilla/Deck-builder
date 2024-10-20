@@ -95,7 +95,7 @@ func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_t
 func _process(delta: float) -> void:
 	if is_spell_active and countdown_time > 0:
 		countdown_time -= delta
-		print("Time remaining for spell to resolve: ", countdown_time)
+		#print("Time remaining for spell to resolve: ", countdown_time)
 
 		if countdown_time <= 0:
 			print("Resolving spell: ", current_spell.spell_name)
