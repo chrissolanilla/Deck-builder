@@ -14,12 +14,17 @@ var hand: Array[CardMetaData]
 var draw_timer: Timer
 #have a variable that loads the players deck from savegame.data
 
+# Bullet scene (preload the bullet scene)
+var BulletScene = preload("res://scenes/Bullet.tscn")
+
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if Input.is_action_pressed("shoot"):
+		shoot_bullet()
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -130,12 +135,22 @@ func select_card_by_index(index: int) -> void:
 			if spell_script == null:
 				return
 			var spell_instance = spell_script.new()
+			spell_instance.resolve_spell(self)
 			spell_instance.setupAttributes(selected_card)
-			var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-			spell_instance.activate_spell(self, selected_card, current_scene, 5.0, Vector3(1,1, 1))
 
 		# Handle other card types (spells, traps) similarly
 		card_container.cards.remove_at(index)
 		card_container._update_card_visuals()
 	else:
 		print("Invalid card index")
+
+func shoot_bullet():
+	var bullet = BulletScene.instantiate()
+
+	bullet.position = self.global_position + Vector3(0, 0, -1.5)
+	# Add the bullet to the scene
+	get_parent().add_child(bullet)
+
+	# Apply an initial impulse to the bullet
+	var forward_direction = bullet.global_transform.basis.z.normalized()
+	bullet.apply_impulse(Vector3.ZERO, forward_direction * bullet.speed)

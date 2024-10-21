@@ -20,6 +20,8 @@ func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_s
 	playerLocal = player
 	var spell_scene = load("res://scenes/World_spell_card.tscn")
 	var spell_instance = spell_scene.instantiate()
+	var spell = load(spell_card.script_path)
+	spell.resolve_spell()
 	var backside = spell_instance.get_node("backside")
 	var front = spell_instance.get_node("front")
 	front.texture = portrait
