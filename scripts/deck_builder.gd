@@ -27,9 +27,12 @@ func loadAvailableCards():
 	if dir:
 		print("Directory exists")
 		dir.list_dir_begin()  # start reading the directory
-		var file_name = dir.get_next()
-		while file_name != "":
-			print("File name: %s" % file_name)
+		var file_name_real = dir.get_next()
+		while file_name_real != "":
+			print("File name: %s" % file_name_real)
+			var file_name = file_name_real
+			if file_name.ends_with(".remap"):
+				file_name = file_name.substr(0, file_name.length() - 6)
 			if not dir.current_is_dir():  # ensure it's not a subdirectory
 				if file_name.ends_with(".tres"):
 					print("Found .tres file: %s" % file_name)
@@ -42,7 +45,7 @@ func loadAvailableCards():
 						ui_card.connect("card_hovered", Callable(self, "_on_card_hovered"))
 						ui_card.connect("card_hovered_exit", Callable(self, "_on_card_hovered_exit"))
 						print("Adding child: %s" % card_data.card_name)
-			file_name = dir.get_next()  # get the next file
+			file_name_real = dir.get_next()  # get the next file
 		dir.list_dir_end()  # close directory access
 	else:
 		print("Directory could not be opened")
