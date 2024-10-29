@@ -1,9 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://d3ed5jpbs4f4l"]
+[gd_scene load_steps=12 format=3 uid="uid://d3ed5jpbs4f4l"]
 
 [ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="1_qchvb"]
 [ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="2_bl5w5"]
 [ext_resource type="Texture2D" uid="uid://bf8omsen2fcru" path="res://assets/cards/portraits/MinecraftGrass.png" id="2_csqv5"]
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="4_hpq6r"]
+[ext_resource type="PackedScene" uid="uid://cs1k22tdf04k4" path="res://scenes/TutorialAsset/player/player.tscn" id="5_r8haa"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_a4kl0"]
 agent_max_slope = 61.85
@@ -16,10 +16,6 @@ albedo_texture = ExtResource("2_csqv5")
 
 [sub_resource type="BoxMesh" id="BoxMesh_wl0a1"]
 material = SubResource("StandardMaterial3D_fbhyn")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5u3u3"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_wo8nq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i6rl4"]
 sky_top_color = Color(0.216729, 0.452657, 0.738579, 1)
@@ -52,18 +48,6 @@ transform = Transform3D(64, 0, 0, 0, 1, 0, 0, 0, 64, 0, 0, 0)
 mesh = SubResource("BoxMesh_wl0a1")
 skeleton = NodePath("../../..")
 
-[node name="Enemy" type="CharacterBody3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0492, 0)
-script = ExtResource("4_hpq6r")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Enemy"]
-shape = SubResource("BoxShape3D_5u3u3")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Enemy"]
-mesh = SubResource("BoxMesh_wo8nq")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="NavigationRegion3D/Enemy"]
-
 [node name="Player" parent="NavigationRegion3D" instance=ExtResource("1_qchvb")]
 
 [node name="CardContainer" parent="NavigationRegion3D" instance=ExtResource("2_bl5w5")]
@@ -73,3 +57,6 @@ environment = SubResource("Environment_ogix4")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="NavigationRegion3D"]
 transform = Transform3D(0.753632, 0.578321, -0.312384, 0, 0.475256, 0.879848, 0.657296, -0.663082, 0.358168, 42.054, 30.0631, 17.2842)
+
+[node name="Robot" parent="NavigationRegion3D" instance=ExtResource("5_r8haa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.26166, 0.554001, 1.99749)
