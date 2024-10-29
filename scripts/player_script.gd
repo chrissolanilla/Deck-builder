@@ -96,25 +96,6 @@ func _input(event: InputEvent) -> void:
 				var index = event.keycode - KEY_1  # Get index from 0-6
 				select_card_by_index(index)
 
-# Function to select a card by its index
-#func select_card_by_index(index: int) -> void:
-	#print(card_container.cards)
-	#print("selected index %s" % index)
-	#if index >= 0 and index < card_container.cards.size():
-		#var selected_card = card_container.cards[index]
-		#if selected_card.card_name == "Rage":
-			#attack *= 2
-			#await get_tree().create_timer(5).timeout
-			#attack /= 2
-		#elif selected_card.card_name == "Heal":
-			#health  += min(health + 30, 100)
-		#elif selected_card.card_name == "Draw":
-			#card_container.cards.append(card_container.card_files[randf_range(0, 4)])
-		#card_container.cards.remove_at(index)
-		#card_container._update_card_visuals()
-	#else:
-		#print("Invalid card index")
-
 func select_card_by_index(index: int) -> void:
 	if index >= 0 and index < card_container.cards.size():
 		var selected_card = card_container.cards[index]
@@ -126,7 +107,7 @@ func select_card_by_index(index: int) -> void:
 				var monster_instance = monster_script.new()
 				monster_instance.setupAttributes(selected_card)
 				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.2, 0.2, 0.2))  # the last param is the scale of the monster
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))  # the last param is the scale of the monster
 
 		elif selected_card.card_type == "spell":
 			#load the script of the spell and create the instance(sprite) above the players head

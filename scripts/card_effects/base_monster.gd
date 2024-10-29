@@ -1,4 +1,4 @@
-extends Node3D
+extends CharacterBody3D
 class_name BaseMonster
 
 var level: int
@@ -56,6 +56,7 @@ func takeDamage(amount: int) -> void:
 
 func destroyByBattle() -> void:
 	#how do i remove it from the field and send it to the players graveyard?
+	self.queue_free()
 	pass
 
 func banish()-> void:
@@ -64,15 +65,20 @@ func banish()-> void:
 
 func heal(amount: int) -> void:
 	defense += amount
+	print("new defense is: ", self.defense)
 
 func reduceAttack(amount: int) -> void:
 	attack -= amount
+	print("new attack is: ", self.attack)
 
 func increaseAttack(amount: int) -> void:
 	attack += amount
+	print("new attack is: ", self.attack)
 
 func changeName(newName: String) -> void:
 	monster_name = newName
+	print("new name is: ", self.monster_name)
 
 func changeLevel(newLevel: int) -> void:
 	level = newLevel
+	print("new level is: ", self.level)

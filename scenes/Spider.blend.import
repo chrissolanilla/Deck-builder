@@ -34,8 +34,29 @@ import_script/path=""
 _subresources={
 "materials": {
 "Spider_01": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://assets/cards/monsters/Spider_01.tres"
+}
+},
+"meshes": {
+"Spider_Cylinder_010": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://scenes/spider/spidermesh.res"
+}
+},
+"nodes": {
+"PATH:Spider_Armature/Skeleton3D": {
+"rest_pose/external_animation_library": null
+},
+"PATH:Spider_Armature/Skeleton3D/Spider": {
+"generate/physics": true,
+"physics/body_type": 1,
+"physics/shape_type": 2
 }
 }
 }
