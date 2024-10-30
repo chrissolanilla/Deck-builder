@@ -12,10 +12,8 @@ var deck: Array[CardMetaData]
 var hand: Array[CardMetaData]
 #timer created programatically
 var draw_timer: Timer
-#have a variable that loads the players deck from savegame.data
 
-# Bullet scene (preload the bullet scene)
-var BulletScene = preload("res://scenes/Bullet.tscn")
+var rifle: Node3D
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
@@ -23,8 +21,8 @@ func _process(_delta: float) -> void:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if Input.is_action_pressed("shoot"):
-		shoot_bullet()
+	#if Input.is_action_pressed("shoot"):
+		
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -45,6 +43,9 @@ func _ready() -> void:
 	draw_timer.start()
 	#set the hand in the hotbar
 	card_container.cards = hand
+	
+	# Get the Rifle node
+	rifle = $Rifle
 
 #draw every 15 seconds
 # Draw a card every 15 seconds
@@ -85,6 +86,12 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	if rifle:
+		var offset = Vector3(0, -3.0, -1.0)  # Adjust this offset as needed
+		var rifle_pos = global_transform.origin + global_transform.basis.z * offset
+		rifle.global_transform.origin = rifle_pos
+		rifle.look_at(global_transform.origin + global_transform.basis.z * 10.0)
 
 # Function to handle keyboard input
 func _input(event: InputEvent) -> void:
@@ -124,14 +131,3 @@ func select_card_by_index(index: int) -> void:
 		card_container._update_card_visuals()
 	else:
 		print("Invalid card index")
-
-func shoot_bullet():
-	var bullet = BulletScene.instantiate()
-
-	bullet.position = self.global_position + Vector3(0, 0, -1.5)
-	# Add the bullet to the scene
-	get_parent().add_child(bullet)
-
-	# Apply an initial impulse to the bullet
-	var forward_direction = bullet.global_transform.basis.z.normalized()
-	bullet.apply_impulse(Vector3.ZERO, forward_direction * bullet.speed)

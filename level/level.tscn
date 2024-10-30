@@ -78,6 +78,7 @@ spawn_path = NodePath("../SpawnedNodes")
 [node name="Core" parent="." instance=ExtResource("14")]
 
 [node name="Structure" parent="." instance=ExtResource("15")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0052, 3.47854, 31.3797)
 
 [node name="Props" parent="." instance=ExtResource("2")]
 
@@ -132,10 +133,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 
 shape = SubResource("1")
 
 [node name="FlyingForklifts" type="Node3D" parent="."]
-
-[node name="FlyingForklift1" parent="FlyingForklifts" instance=ExtResource("12")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.8049, 2.27771, 0)
-script = null
 
 [node name="FlyingForklift2" parent="FlyingForklifts" instance=ExtResource("12")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -68.2496, 2.27771, 0)
@@ -261,6 +258,6 @@ resolution = 4
 texture = ExtResource("11_mt3nw")
 
 [node name="PlayerBody" parent="." instance=ExtResource("11_ki5ty")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.1088, 5.8979, 56.2574)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.8239, 5.85809, 55.8791)
 
 [node name="CardContainer" parent="." instance=ExtResource("12_6tne2")]
