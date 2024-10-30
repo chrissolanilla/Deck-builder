@@ -12,7 +12,8 @@ var deck: Array[CardMetaData]
 var hand: Array[CardMetaData]
 #timer created programatically
 var draw_timer: Timer
-#have a variable that loads the players deck from savegame.data
+
+var rifle: Node3D
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
@@ -20,6 +21,8 @@ func _process(_delta: float) -> void:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#if Input.is_action_pressed("shoot"):
+		
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -40,6 +43,9 @@ func _ready() -> void:
 	draw_timer.start()
 	#set the hand in the hotbar
 	card_container.cards = hand
+	
+	# Get the Rifle node
+	rifle = $Rifle
 
 #draw every 15 seconds
 # Draw a card every 15 seconds
@@ -80,6 +86,12 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	if rifle:
+		var offset = Vector3(0, -3.0, -1.0)  # Adjust this offset as needed
+		var rifle_pos = global_transform.origin + global_transform.basis.z * offset
+		rifle.global_transform.origin = rifle_pos
+		rifle.look_at(global_transform.origin + global_transform.basis.z * 10.0)
 
 # Function to handle keyboard input
 func _input(event: InputEvent) -> void:
@@ -90,25 +102,6 @@ func _input(event: InputEvent) -> void:
 			KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7:
 				var index = event.keycode - KEY_1  # Get index from 0-6
 				select_card_by_index(index)
-
-# Function to select a card by its index
-#func select_card_by_index(index: int) -> void:
-	#print(card_container.cards)
-	#print("selected index %s" % index)
-	#if index >= 0 and index < card_container.cards.size():
-		#var selected_card = card_container.cards[index]
-		#if selected_card.card_name == "Rage":
-			#attack *= 2
-			#await get_tree().create_timer(5).timeout
-			#attack /= 2
-		#elif selected_card.card_name == "Heal":
-			#health  += min(health + 30, 100)
-		#elif selected_card.card_name == "Draw":
-			#card_container.cards.append(card_container.card_files[randf_range(0, 4)])
-		#card_container.cards.remove_at(index)
-		#card_container._update_card_visuals()
-	#else:
-		#print("Invalid card index")
 
 func select_card_by_index(index: int) -> void:
 	if index >= 0 and index < card_container.cards.size():
@@ -121,7 +114,7 @@ func select_card_by_index(index: int) -> void:
 				var monster_instance = monster_script.new()
 				monster_instance.setupAttributes(selected_card)
 				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.2, 0.2, 0.2))  # the last param is the scale of the monster
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))  # the last param is the scale of the monster
 
 		elif selected_card.card_type == "spell":
 			#load the script of the spell and create the instance(sprite) above the players head
@@ -130,9 +123,8 @@ func select_card_by_index(index: int) -> void:
 			if spell_script == null:
 				return
 			var spell_instance = spell_script.new()
+			spell_instance.resolve_spell(self)
 			spell_instance.setupAttributes(selected_card)
-			var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-			spell_instance.activate_spell(self, selected_card, current_scene, 5.0, Vector3(1,1, 1))
 
 		# Handle other card types (spells, traps) similarly
 		card_container.cards.remove_at(index)
