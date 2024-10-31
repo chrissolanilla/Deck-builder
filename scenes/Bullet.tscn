@@ -1,17 +1,50 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkvs8j3e8tejc"]
+[gd_scene load_steps=7 format=3 uid="uid://d1buv75dlnxas"]
 
-[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_liis6"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_dyh8l"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_r6qbr"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nksq4"]
+direction = Vector3(1, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_f8avr"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7wwx5"]
+albedo_color = Color(0.976471, 0.956863, 0, 1)
+emission_enabled = true
+emission = Color(0.549714, 0.0442775, 0.542043, 1)
+emission_energy_multiplier = 8.0
 
-[node name="Bullet" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0539657, 0.0970138, -0.0898743)
-script = ExtResource("1_liis6")
+[sub_resource type="BoxMesh" id="BoxMesh_ykgc4"]
+material = SubResource("StandardMaterial3D_7wwx5")
+size = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s5d6k"]
+size = Vector3(0.05, 0.05, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x03re"]
+albedo_color = Color(1, 1, 0.223529, 1)
+emission_enabled = true
+emission = Color(0.951148, 0.835703, 0.885393, 1)
+emission_energy_multiplier = 5.0
+
+[node name="Bullet" type="Node3D"]
+script = ExtResource("1_dyh8l")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -0.6)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.179368, 0.00537863, 0.676394)
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_nksq4")
+draw_pass_1 = SubResource("BoxMesh_ykgc4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_r6qbr")
+mesh = SubResource("BoxMesh_s5d6k")
+surface_material_override/0 = SubResource("StandardMaterial3D_x03re")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_f8avr")
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
