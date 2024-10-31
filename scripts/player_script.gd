@@ -13,7 +13,12 @@ var hand: Array[CardMetaData]
 #timer created programatically
 var draw_timer: Timer
 
+var bullet = load("res://scenes/bullet.tscn")
+var instance
+
 var rifle: Node3D
+var rifle_anim: AnimationPlayer
+var rifle_barrel:RayCast3D
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
@@ -45,7 +50,9 @@ func _ready() -> void:
 	card_container.cards = hand
 	
 	# Get the Rifle node
-	rifle = $Rifle
+	rifle = $Camera3D/Rifle
+	rifle_anim = $Camera3D/Rifle/AnimationPlayer
+	rifle_barrel = $Camera3D/Rifle/RayCast3D
 
 #draw every 15 seconds
 # Draw a card every 15 seconds
@@ -87,11 +94,13 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
-	if rifle:
-		var offset = Vector3(0, -3.0, -1.0)  # Adjust this offset as needed
-		var rifle_pos = global_transform.origin + global_transform.basis.z * offset
-		rifle.global_transform.origin = rifle_pos
-		rifle.look_at(global_transform.origin + global_transform.basis.z * 10.0)
+	if Input.is_action_pressed("shoot"):
+		if !rifle_anim.is_playing():
+			rifle_anim.play("shoot")
+			instance = bullet.instantiate()
+			instance.position = rifle_barrel.global_position
+			instance.transform.basis = rifle_barrel.global_transform.basis
+			get_parent().add_child(instance)
 
 # Function to handle keyboard input
 func _input(event: InputEvent) -> void:
