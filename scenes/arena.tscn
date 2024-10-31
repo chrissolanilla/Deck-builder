@@ -49,6 +49,7 @@ mesh = SubResource("BoxMesh_wl0a1")
 skeleton = NodePath("../../..")
 
 [node name="Player" parent="NavigationRegion3D" instance=ExtResource("1_qchvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26125, 29.2129)
 
 [node name="CardContainer" parent="NavigationRegion3D" instance=ExtResource("2_bl5w5")]
 
