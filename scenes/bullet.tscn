@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1buv75dlnxas"]
+[gd_scene load_steps=8 format=3 uid="uid://d1buv75dlnxas"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_dyh8l"]
 
@@ -26,6 +26,9 @@ emission_enabled = true
 emission = Color(0.951148, 0.835703, 0.885393, 1)
 emission_energy_multiplier = 5.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_di2ei"]
+size = Vector3(0.05, 0.05, 1)
+
 [node name="Bullet" type="Node3D"]
 script = ExtResource("1_dyh8l")
 
@@ -38,13 +41,20 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_nksq4")
 draw_pass_1 = SubResource("BoxMesh_ykgc4")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_s5d6k")
-surface_material_override/0 = SubResource("StandardMaterial3D_x03re")
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
 autostart = true
 
+[node name="BulletArea" type="Area3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BulletArea"]
+mesh = SubResource("BoxMesh_s5d6k")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_x03re")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BulletArea"]
+shape = SubResource("BoxShape3D_di2ei")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="BulletArea" to="." method="_on_area_3d_body_entered"]

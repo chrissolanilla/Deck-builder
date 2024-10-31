@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b51qillnxp84r"]
+[gd_scene load_steps=17 format=3 uid="uid://b51qillnxp84r"]
 
 [ext_resource type="Script" path="res://level/level.gd" id="1_7ydoo"]
 [ext_resource type="PackedScene" uid="uid://bpihm2o3g658" path="res://level/geometry/scenes/props.tscn" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dln4kthc3tvfv" path="res://level/forklift/flying_forklift.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="12_6tne2"]
 [ext_resource type="PackedScene" uid="uid://dgvowmn3iop44" path="res://level/geometry/scenes/lights.tscn" id="13"]
+[ext_resource type="PackedScene" uid="uid://cs1k22tdf04k4" path="res://scenes/TutorialAsset/player/player.tscn" id="13_xkkq0"]
 [ext_resource type="PackedScene" uid="uid://ddbnmy6um5fjg" path="res://level/geometry/scenes/core.tscn" id="14"]
 [ext_resource type="PackedScene" uid="uid://bh1lh032pmey2" path="res://level/geometry/scenes/structure.tscn" id="15"]
 [ext_resource type="Environment" uid="uid://cnn46umvf55rs" path="res://level/geometry/environment.tres" id="16"]
@@ -257,7 +258,10 @@ size = Vector3(140, 40, 140)
 resolution = 4
 texture = ExtResource("11_mt3nw")
 
-[node name="PlayerBody" parent="." instance=ExtResource("11_ki5ty")]
+[node name="Player" parent="." instance=ExtResource("11_ki5ty")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.8239, 5.85809, 55.8791)
 
 [node name="CardContainer" parent="." instance=ExtResource("12_6tne2")]
+
+[node name="Robot" parent="." instance=ExtResource("13_xkkq0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.6527, 3.43136, 39.2445)

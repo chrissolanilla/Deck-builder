@@ -2,7 +2,7 @@ extends Node3D
 
 const SPEED = 40.0
 
-@onready var mesh = $MeshInstance3D
+@onready var mesh = $BulletArea/MeshInstance3D
 @onready var ray = $RayCast3D
 @onready var particles = $GPUParticles3D
 # Called when the node enters the scene tree for the first time.
@@ -21,3 +21,13 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	queue_free()
+
+#TODO
+#this code didnt work cause the bullet would go through the robot for some reason TODO!!!!
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	print("body we are entering is ", body)
+	if body.has_method("take_damage"):
+		print("it has the method!")
+		body.take_damage(20)  
+	else:
+		print("it does not have the method")

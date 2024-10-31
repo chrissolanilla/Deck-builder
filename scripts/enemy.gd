@@ -3,9 +3,10 @@ extends CharacterBody3D
 # Speed of the enemy
 var gravity = -9.8
 var speed = 2.0
-
+var health = 100
 @onready var nav_agent = $NavigationAgent3D
 @onready var player: CharacterBody3D = $"../Player"
+@onready var healthbar: ProgressBar = $SubViewport/Healthbar
 
 func _physics_process(delta):
 	if player:
@@ -13,7 +14,7 @@ func _physics_process(delta):
 		velocity = direction * speed
 		#make him fall in gravity.
 		if not is_on_floor():
-			velocity.y += gravity * delta
+			velocity.y += gravity * delta*10 #needs to be a high value lowkey
 		else:
 			velocity.y = 0
 		
@@ -24,3 +25,18 @@ func _physics_process(delta):
 		rotation.y += PI
 	else:
 		print("Player not found")
+
+func take_damage(amount:int) -> void:
+	if(health< amount):
+		amount = health
+	health -= amount
+	healthbar.value = health
+	if(health ==0):
+		queue_free()
+	
+
+
+func _on_area_3d_area_entered(area: Area3D) -> void:
+	if(area.name == "BulletArea"):
+		take_damage(2)
+		
