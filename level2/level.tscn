@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://ba3mhrq6sxp4o"]
+
+[ext_resource type="PackedScene" uid="uid://5sf4rrehidon" path="res://level2/level.blend" id="1_vlch0"]
+[ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="2_0tsaw"]
+[ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="3_6n5eu"]
+[ext_resource type="PackedScene" uid="uid://cs1k22tdf04k4" path="res://scenes/TutorialAsset/player/player.tscn" id="4_qfycd"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_a4kl0"]
+agent_max_slope = 61.85
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i6rl4"]
+sky_top_color = Color(0.216729, 0.452657, 0.738579, 1)
+sky_horizon_color = Color(0.332926, 0.702861, 0.878085, 1)
+ground_bottom_color = Color(0.0834476, 0.135507, 0.410619, 1)
+ground_horizon_color = Color(0.267921, 0.722415, 0.818641, 1)
+
+[sub_resource type="Sky" id="Sky_lk4bk"]
+sky_material = SubResource("ProceduralSkyMaterial_i6rl4")
+
+[sub_resource type="Environment" id="Environment_ogix4"]
+background_mode = 2
+sky = SubResource("Sky_lk4bk")
+
+[node name="Arena" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0672663, 1.2518, 0.420179)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_a4kl0")
+
+[node name="Player" parent="NavigationRegion3D" instance=ExtResource("2_0tsaw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.20342, 3.26125, -10.7425)
+
+[node name="CardContainer" parent="NavigationRegion3D" instance=ExtResource("3_6n5eu")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="NavigationRegion3D"]
+environment = SubResource("Environment_ogix4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="NavigationRegion3D"]
+transform = Transform3D(0.753632, 0.578321, -0.312384, 0, 0.475256, 0.879848, 0.657296, -0.663082, 0.358168, 42.054, 30.0631, 17.2842)
+
+[node name="Robot" parent="NavigationRegion3D" instance=ExtResource("4_qfycd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.26166, 0.554001, 1.99749)
+
+[node name="level" parent="NavigationRegion3D" instance=ExtResource("1_vlch0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0719743, 0.054001, 0.15898)
