@@ -4,6 +4,7 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 7.5
 const MOUSE_SENSITIVITY = 0.0010
 const DRAW_INTERVAL = 15
+@onready var healthbar: ProgressBar = $Healthbar
 
 var health = 100
 var attack = 20
@@ -27,6 +28,11 @@ func _process(_delta: float) -> void:
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	#if Input.is_action_pressed("shoot"):
+	if health <= 0:
+		#put up a game over menu maybe
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		self.queue_free()
+		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
 		
 
 func _ready() -> void:
@@ -141,3 +147,10 @@ func select_card_by_index(index: int) -> void:
 		card_container._update_card_visuals()
 	else:
 		print("Invalid card index")
+		
+
+func take_damage(amount:int):
+	if amount > health:
+			amount = health
+	health-=amount
+	healthbar.value = health
