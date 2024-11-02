@@ -1,14 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://dgxqu5tafey62"]
+[gd_scene load_steps=4 format=3 uid="uid://dgxqu5tafey62"]
 
+[ext_resource type="Texture2D" uid="uid://dbcdojsn3di5f" path="res://assets/Background.webp" id="1_f52wc"]
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_rdt4w"]
+[ext_resource type="FontFile" uid="uid://bmk33nlgv6a8i" path="res://assets/PixelifySans-VariableFont_wght.ttf" id="3_srsap"]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" groups=["player"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -310.0
+offset_right = 320.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_f52wc")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -24,8 +39,22 @@ script = ExtResource("1_rdt4w")
 
 [node name="PlayButton" type="Button" parent="CenterContainer/MainMenuContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 100
 text = "Play game"
 
 [node name="DeckButton" type="Button" parent="CenterContainer/MainMenuContainer"]
 layout_mode = 2
-text = "Open deck builder"
+theme_override_font_sizes/font_size = 100
+text = "Deck Builder
+"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 124.0
+offset_top = 32.0
+offset_right = 1808.0
+offset_bottom = 272.0
+theme_override_fonts/font = ExtResource("3_srsap")
+theme_override_font_sizes/font_size = 200
+text = "Cards of Mayhem"
+horizontal_alignment = 1

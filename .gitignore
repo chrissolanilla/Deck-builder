@@ -3,3 +3,6 @@
 /android/
 imported/
 export_presets.cfg
+
+# ignore .blend1 backup files
+*.blend1

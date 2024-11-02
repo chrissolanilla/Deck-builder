@@ -31,7 +31,6 @@ background_mode = 2
 sky = SubResource("Sky_lk4bk")
 
 [node name="Arena" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0672663, 1.2518, 0.420179)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_a4kl0")
@@ -49,6 +48,7 @@ mesh = SubResource("BoxMesh_wl0a1")
 skeleton = NodePath("../../..")
 
 [node name="Player" parent="NavigationRegion3D" instance=ExtResource("1_qchvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26125, 29.2129)
 
 [node name="CardContainer" parent="NavigationRegion3D" instance=ExtResource("2_bl5w5")]
 
