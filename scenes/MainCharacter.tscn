@@ -8,7 +8,7 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_j86uh"]
 
-[node name="PlayerBody" type="CharacterBody3D"]
+[node name="PlayerBody" type="CharacterBody3D" groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2979, 29.2129)
 script = ExtResource("1_apigs")
 

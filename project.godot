@@ -24,6 +24,10 @@ DeckManager="*res://scripts/deck_manager.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 
+[global_group]
+
+player=""
+
 [input]
 
 ui_left={

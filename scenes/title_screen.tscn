@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_rdt4w"]
 [ext_resource type="FontFile" uid="uid://bmk33nlgv6a8i" path="res://assets/PixelifySans-VariableFont_wght.ttf" id="3_srsap"]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" groups=["player"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

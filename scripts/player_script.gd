@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 7.5
 const MOUSE_SENSITIVITY = 0.0010
 const DRAW_INTERVAL = 15
 
@@ -100,6 +100,7 @@ func _physics_process(delta: float) -> void:
 			instance = bullet.instantiate()
 			instance.position = rifle_barrel.global_position
 			instance.transform.basis = rifle_barrel.global_transform.basis
+			instance.direction = transform.basis * Vector3(0, 0, -SPEED)
 			get_parent().add_child(instance)
 
 # Function to handle keyboard input

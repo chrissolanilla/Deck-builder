@@ -1,7 +1,7 @@
 extends Node3D
 
 const SPEED = 40.0
-
+@export var direction: Vector3 = Vector3.ZERO
 @onready var mesh = $BulletArea/MeshInstance3D
 @onready var ray = $RayCast3D
 @onready var particles = $GPUParticles3D
@@ -12,7 +12,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	position += transform.basis * Vector3(0, 0, -SPEED) * delta
+	position += direction * SPEED * delta
 	if ray.is_colliding():
 		mesh.visible = false
 		particles.emitting = true
@@ -25,9 +25,5 @@ func _on_timer_timeout() -> void:
 #TODO
 #this code didnt work cause the bullet would go through the robot for some reason TODO!!!!
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print("body we are entering is ", body)
 	if body.has_method("take_damage"):
-		print("it has the method!")
-		body.take_damage(20)  
-	else:
-		print("it does not have the method")
+		body.take_damage(20)

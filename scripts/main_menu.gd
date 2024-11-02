@@ -10,7 +10,7 @@ func _ready() -> void:
 	$DeckButton.pressed.connect(_on_deck_pressed)
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://level2/level.tscn")
+	get_tree().change_scene_to_file("res://level3/level.tscn")
 
 func _on_deck_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/deck_builder.tscn")
