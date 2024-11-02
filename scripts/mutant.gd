@@ -26,7 +26,7 @@ func _physics_process(delta):
 		nav_agent.set_target_position(player.global_transform.origin)
 		var next_nav_point = nav_agent.get_next_path_position()
 		velocity = (next_nav_point - global_transform.origin).normalized() * speed
-		look_at(Vector3(global_position.x + velocity.x, global_position.y + velocity.y, global_position.z + velocity.z), Vector3.UP)
+		look_at(Vector3(global_position.x + velocity.x, global_position.y + velocity.y, global_position.z + velocity.z), Vector3(0,1,0))
 		state_machine.set("run", 1.0)
 		
 	else:
