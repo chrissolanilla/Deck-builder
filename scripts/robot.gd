@@ -4,12 +4,17 @@ extends CharacterBody3D
 var gravity = -9.8
 var speed = 2.0
 var health = 100
+var deck: Array[CardMetaData]
 @onready var nav_agent = $NavigationAgent3D
 @onready var player: CharacterBody3D = $"../Player"
 @onready var healthbar: ProgressBar = $SubViewport/Healthbar
 @onready var bullet = load("res://scenes/bullet.tscn")
 @onready var robot_body = $"PlayerModel/Robot_Skeleton/Skeleton3D/00Robot_Body_008"
 var instance
+
+func _ready() -> void:
+	deck.shuffle()
+	
 
 func _physics_process(delta):
 	velocity = Vector3.ZERO
