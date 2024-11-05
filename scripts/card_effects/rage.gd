@@ -4,7 +4,7 @@ extends BaseSpell
 
 func resolve_spell(player: CharacterBody3D) -> void:
 	print(player.attack)
-	player.attack *= 2;
+	player.attack *= 2
 	
 	# Create a timer node to handle the delay
 	var revert_timer = Timer.new()

@@ -7,7 +7,9 @@ var is_spell_active: bool = false
 var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
-
+var negated: bool = false
+const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
+var cardInstance
 
 func setDeck(newDeck: Array[CardMetaData]) -> void:
 	deck = newDeck
@@ -95,8 +97,25 @@ func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_t
 func getIfSpellActive() -> bool:
 	return is_spell_active
 
-func _process(delta: float) -> void:
+
+func negateCurrentCard()-> void:
+	negated = true
 	
+func setCurrentCardInstance(instanceParam)-> void:
+	cardInstance = instanceParam
+	
+func _process(delta: float) -> void:
+	if current_spell == null:
+		#print("current spell is null right now")
+		return
+	
+	if negated:
+		current_spell.change_sprite(cardInstance, DEFAULT_CARD)
+		current_spell= null
+		cardInstance = null
+		negated = false
+		is_spell_active= false
+		#somehow make negated false again after we negate our card but dont resolve the spell
 	if is_spell_active and countdown_time > 0:
 		countdown_time -= delta
 		if abs(countdown_time - round(countdown_time)) < 0.006:
@@ -109,3 +128,4 @@ func _process(delta: float) -> void:
 			set_process(false)  # Disable process
 			current_spell.resolve_spell(current_spell.playerLocal)
 			current_spell.queue_free()  # Free the spell instance after it resolves
+			cardInstance.queue_free()

@@ -29,11 +29,11 @@ func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_s
 	var spell_scene = load("res://scenes/World_spell_card.tscn")
 	var spell_instance = spell_scene.instantiate()
 	var spell = load(spell_card.script_path)
-	#spell.resolve_spell()
-	var backside = spell_instance.get_node("backside")
-	var front = spell_instance.get_node("front")
-	front.texture = portrait
-	backside.texture = portrait
+	if player.name=="Player":
+		DeckManager.setCurrentCardInstance(spell_instance)
+	else:
+		AiDeckManager.setCurrentCardInstance(spell_instance)
+	change_sprite(spell_instance, portrait)
 
 	if current_scene == null:
 		print("Scene is null!")
@@ -51,9 +51,24 @@ func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_s
 
 	# Start the countdown using DeckManager
 	print("passing these into function: self is ", self, "palyer is: ", player, "startup is  ", self.start_up)
-	DeckManager.startCountDown(self, player, self.start_up)
+	print("player.name is ", player.name)
+	if player.name == "Player":
+		print("doing the thing for player")
+		DeckManager.startCountDown(self, player, self.start_up)
+	else:
+		print("doing the thing for the robot")
+		AiDeckManager.startCountDown(self,player,self.start_up)
 
 func resolve_spell(player: CharacterBody3D) -> void:
 	if not initialized:
 		return
 	print("Base spell resolve - should be overridden.")
+
+func change_sprite(spell_instance, portrait):
+	print("helloa")
+	#print("spell instance is", spell_instance)
+	var backside = spell_instance.get_node("backside")
+	var front = spell_instance.get_node("front")
+	front.texture = portrait
+	backside.texture = portrait
+	
