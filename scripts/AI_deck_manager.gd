@@ -8,7 +8,7 @@ var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
 
-func preload_ai_deck(deck:Array[CardMetaData]) -> Array[CardMetaData]:
+func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 	# Manually populate the AI's deck with specific cards
 	var cards = [
 		"res://assets/cards/MetaData/Cursed_scarab.tres",
@@ -18,11 +18,11 @@ func preload_ai_deck(deck:Array[CardMetaData]) -> Array[CardMetaData]:
 	for card in cards:
 		card = ResourceLoader.load(card)
 		print("appending ", card)
-		deck.append(card)
-		deck.append(card)
-		deck.append(card)
+		deckParam.append(card)
+		deckParam.append(card)
+		deckParam.append(card)
 		
-	return deck
+	return deckParam
 		
 
 func setDeck(newDeck: Array[CardMetaData]) -> void:

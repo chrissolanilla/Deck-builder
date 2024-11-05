@@ -133,12 +133,17 @@ func select_card_by_index(index: int) -> void:
 				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))  # the last param is the scale of the monster
 
 		elif selected_card.card_type == "spell":
+			if DeckManager.getIfSpellActive():
+				print("Can not play spell yet")
+				return
 			#load the script of the spell and create the instance(sprite) above the players head
 			var spell_script = load(selected_card.script_path)
 			print("spell script is", spell_script)
 			if spell_script == null:
 				return
 			var spell_instance = spell_script.new()
+			var current_scene = get_tree().root.get_child(0)
+			spell_instance.activate_spell(self, selected_card, current_scene, 5.0, Vector3(1,1,1))
 			spell_instance.resolve_spell(self)
 			spell_instance.setupAttributes(selected_card)
 

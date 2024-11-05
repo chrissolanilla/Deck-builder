@@ -80,22 +80,28 @@ func loadCurrentDeck(deckArray: Array) -> Array:
 
 
 func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_time: float) -> void:
+	print("spell is :", currentSpell.spell_name, "spell count down is ",  currentSpell.start_up)
 	if is_spell_active:
 		print("a spell is alreadyactive")
 		return
-	print("starting countdown for spell: ")
+	print("starting countdown for spell: ", start_up_time)
 	is_spell_active = true
 	countdown_time = start_up_time
 	#keep track of the curernt spell?
 	current_spell = currentSpell
 	current_spell.playerLocal = player
 	set_process(true)
-
+	
+func getIfSpellActive() -> bool:
+	return is_spell_active
 
 func _process(delta: float) -> void:
+	
 	if is_spell_active and countdown_time > 0:
 		countdown_time -= delta
-		#print("Time remaining for spell to resolve: ", countdown_time)
+		if abs(countdown_time - round(countdown_time)) < 0.006:
+			print("Time remaining for spell to resolve: ", round(countdown_time))
+
 
 		if countdown_time <= 0:
 			print("Resolving spell: ", current_spell.spell_name)

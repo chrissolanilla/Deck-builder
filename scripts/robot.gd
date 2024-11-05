@@ -15,6 +15,7 @@ var instance
 func _ready() -> void:
 	deck = AiDeckManager.preload_ai_deck(deck)
 	print("robot deck is : ", deck)
+	AiDeckManager.setDeck(deck)
 	
 
 func _physics_process(delta):
