@@ -8,6 +8,7 @@ var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
 var negated: bool = false
+var negateCount = 0
 var cardInstance
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
 
@@ -86,9 +87,12 @@ func getIfSpellActive() -> bool:
 	return is_spell_active
 
 
+
 func negateCurrentCard()-> void:
 	negated = true
-	print("set negate to true")
+	await get_tree().create_timer(1).timeout
+	negated = false
+	
 	
 func setCurrentCardInstance(instanceParam)-> void:
 	cardInstance = instanceParam
@@ -105,7 +109,6 @@ func _process(delta: float) -> void:
 		current_spell.change_sprite(cardInstance, DEFAULT_CARD)
 		current_spell= null
 		cardInstance = null
-		negated = false
 		is_spell_active= false
 		
 		
