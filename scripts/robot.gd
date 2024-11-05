@@ -13,7 +13,8 @@ var deck: Array[CardMetaData]
 var instance
 
 func _ready() -> void:
-	deck.shuffle()
+	deck = AiDeckManager.preload_ai_deck(deck)
+	print("robot deck is : ", deck)
 	
 
 func _physics_process(delta):
