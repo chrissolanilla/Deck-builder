@@ -83,7 +83,8 @@ func _on_action_timer_timeout() -> void:
 	# Select a random card from the hand
 	var random_index = randi() % hand.size()
 	var selected_card = hand[random_index]
-	
+	if (selected_card == null):
+		return
 	match selected_card.card_type:
 		"monster":
 			play_monster_card(selected_card)
@@ -115,7 +116,7 @@ func play_spell_card(card: CardMetaData) -> void:
 		var spell_instance = spell_script.new()
 		var current_scene = get_tree().root.get_child(1)
 		if current_scene:
-			spell_instance.activate_spell(self, card, current_scene, 5.0, Vector3(1, 1, 1))
-			spell_instance.resolve_spell(self)
+			spell_instance.activate_spell(self, player, card, current_scene, 5.0, Vector3(1, 1, 1))
+			spell_instance.resolve_spell(self, player)
 			spell_instance.setupAttributes(card)
 		print("AI played spell card: ", card.card_name)

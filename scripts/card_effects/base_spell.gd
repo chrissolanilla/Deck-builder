@@ -7,6 +7,7 @@ var portrait: Texture
 var start_up: float
 var is_interrupted: bool = false
 var playerLocal: CharacterBody3D
+var enemyLocal: CharacterBody3D
 var initialized:bool = false
 signal attributes_initialized
 
@@ -19,13 +20,14 @@ func setupAttributes(metadata: CardMetaData) -> void:
 	print("after self.startup is ", self.start_up)
 	emit_signal("attributes_initialized")
 
-func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_scene: Node, distance: float, scale: Vector3 = Vector3(1, 1, 1)) -> void:
+func activate_spell(player: CharacterBody3D, enemy: CharacterBody3D, spell_card: CardMetaData, current_scene: Node, distance: float, scale: Vector3 = Vector3(1, 1, 1)) -> void:
 	if not initialized:
 		print("Attributes not initialized. Waiting for setupAttributes() to complete.")
 		await self.attributes_initialized
 	print("Activating spell: ", spell_name)
 
 	playerLocal = player
+	enemyLocal = enemy
 	var spell_scene = load("res://scenes/World_spell_card.tscn")
 	var spell_instance = spell_scene.instantiate()
 	var spell = load(spell_card.script_path)
@@ -54,12 +56,12 @@ func activate_spell(player: CharacterBody3D, spell_card: CardMetaData, current_s
 	print("player.name is ", player.name)
 	if player.name == "Player":
 		print("doing the thing for player")
-		DeckManager.startCountDown(self, player, self.start_up)
+		DeckManager.startCountDown(self, player, enemyLocal, self.start_up)
 	else:
 		print("doing the thing for the robot")
 		AiDeckManager.startCountDown(self,player,self.start_up)
 
-func resolve_spell(player: CharacterBody3D) -> void:
+func resolve_spell(player: CharacterBody3D, enemy: CharacterBody3D = null) -> void:
 	if not initialized:
 		return
 	print("Base spell resolve - should be overridden.")

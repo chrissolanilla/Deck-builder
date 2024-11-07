@@ -2,7 +2,7 @@ extends BaseSpell
 
 @export var duration := 2.0
 
-func resolve_spell(player: CharacterBody3D) -> void:
+func resolve_spell(player: CharacterBody3D, enemy: CharacterBody3D = null) -> void:
 	print(player.attack)
 	player.attack *= 2
 	

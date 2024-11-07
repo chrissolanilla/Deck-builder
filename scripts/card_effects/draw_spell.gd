@@ -1,6 +1,6 @@
 extends BaseSpell
 
-func resolve_spell(player: CharacterBody3D) -> void:
+func resolve_spell(player: CharacterBody3D, enemy: CharacterBody3D = null) -> void:
 	# Access the player's deck or hand and draw one card
 	var drawn_card = DeckManager.draw_card()
 	print("player children are: ", player.get_children())

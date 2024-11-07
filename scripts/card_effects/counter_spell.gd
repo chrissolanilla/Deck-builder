@@ -1,7 +1,7 @@
 extends BaseSpell
 
 
-func resolve_spell(player: CharacterBody3D) -> void:
+func resolve_spell(player: CharacterBody3D, enemy: CharacterBody3D = null) -> void:
 	#
 	#if not initialized:
 		#print("Attributes not initialized. Waiting for setupAttributes() to complete.")

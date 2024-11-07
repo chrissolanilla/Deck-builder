@@ -5,6 +5,7 @@ const JUMP_VELOCITY = 7.5
 const MOUSE_SENSITIVITY = 0.0010
 const DRAW_INTERVAL = 15
 @onready var healthbar: ProgressBar = $Healthbar
+@onready var enemy: CharacterBody3D = $"../Robot"
 
 var health = 100
 var attack = 20
@@ -13,7 +14,6 @@ var deck: Array[CardMetaData]
 var hand: Array[CardMetaData]
 #timer created programatically
 var draw_timer: Timer
-
 var bullet = load("res://scenes/bullet.tscn")
 var instance
 
@@ -143,8 +143,8 @@ func select_card_by_index(index: int) -> void:
 				return
 			var spell_instance = spell_script.new()
 			var current_scene = get_tree().root.get_child(0)
-			spell_instance.activate_spell(self, selected_card, current_scene, 5.0, Vector3(1,1,1))
-			spell_instance.resolve_spell(self)
+			spell_instance.activate_spell(self, enemy, selected_card, current_scene, 5.0, Vector3(1,1,1))
+			spell_instance.resolve_spell(self, enemy)
 			spell_instance.setupAttributes(selected_card)
 
 		# Handle other card types (spells, traps) similarly

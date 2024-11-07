@@ -7,6 +7,8 @@ var is_spell_active: bool = false
 var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
+var enemyLocal: CharacterBody3D
+
 var negated: bool = false
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
 var cardInstance
@@ -84,7 +86,7 @@ func loadCurrentDeck(deckArray: Array) -> Array:
 	return deckArray
 
 
-func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_time: float) -> void:
+func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D, enemy:CharacterBody3D, start_up_time: float) -> void:
 	print("spell is :", currentSpell.spell_name, "spell count down is ",  currentSpell.start_up)
 	if is_spell_active:
 		print("a spell is alreadyactive")
@@ -95,6 +97,7 @@ func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D , start_up_t
 	#keep track of the curernt spell?
 	current_spell = currentSpell
 	current_spell.playerLocal = player
+	current_spell.enemyLocal = enemy
 	set_process(true)
 	
 func getIfSpellActive() -> bool:
@@ -129,6 +132,6 @@ func _process(delta: float) -> void:
 			print("Resolving spell: ", current_spell.spell_name)
 			is_spell_active = false
 			set_process(false)  # Disable process
-			current_spell.resolve_spell(current_spell.playerLocal)
+			current_spell.resolve_spell(current_spell.playerLocal, current_spell.enemyLocal)
 			current_spell.queue_free()  # Free the spell instance after it resolves
 			cardInstance.queue_free()
