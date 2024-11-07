@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://cefamal4uwe6i"]
+[gd_scene load_steps=22 format=3 uid="uid://cefamal4uwe6i"]
 
+[ext_resource type="Script" path="res://level3/level.gd" id="1_0fo2v"]
 [ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="2_dlxwu"]
 [ext_resource type="PackedScene" uid="uid://bk5l4cs7puemt" path="res://scenes/tree.tscn" id="2_vb3hu"]
 [ext_resource type="PackedScene" uid="uid://rs8wwabfby6g" path="res://scenes/grass.tscn" id="3_4iro7"]
@@ -43,6 +44,7 @@ volumetric_fog_albedo = Color(0.70473, 0.928113, 0.991765, 1)
 volumetric_fog_emission = Color(0.0208938, 0.208334, 0.246102, 1)
 
 [node name="Level" type="Node3D"]
+script = ExtResource("1_0fo2v")
 
 [node name="Sun" type="CSGSphere3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 613, 28)

@@ -4,7 +4,7 @@ extends CharacterBody3D
 var gravity = -9.8
 var speed = 2.0
 var health = 100
-var attack_range = 2.5
+var attack_range = 1.5
 var state_machine
 var rotation_offset = Vector3(0, PI, 0)  # 180 degrees around the Y-axis
 var attacking = false

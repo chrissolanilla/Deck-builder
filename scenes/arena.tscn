@@ -1,11 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://d3ed5jpbs4f4l"]
+[gd_scene load_steps=13 format=3 uid="uid://d3ed5jpbs4f4l"]
 
+[ext_resource type="Script" path="res://scripts/arena.gd" id="1_dpdex"]
 [ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="1_qchvb"]
 [ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="2_bl5w5"]
 [ext_resource type="Texture2D" uid="uid://bf8omsen2fcru" path="res://assets/cards/portraits/MinecraftGrass.png" id="2_csqv5"]
 [ext_resource type="PackedScene" uid="uid://cs1k22tdf04k4" path="res://scenes/TutorialAsset/player/player.tscn" id="5_r8haa"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_a4kl0"]
+vertices = PackedVector3Array(-31.428, 1.054, 1.90898, -7.67803, 1.054, 1.90898, -7.42803, 1.054, 1.15898, -6.17803, 1.054, -31.341, -31.428, 1.054, -31.341, -6.17803, 1.054, 1.15898, -4.92803, 1.054, 1.15898, -4.67803, 1.054, 1.90898, 31.572, 1.054, 1.90898, 31.572, 1.054, -31.341, 0.0719738, 1.054, 31.659, 0.0719738, 1.054, 30.159, -0.928026, 1.054, 29.659, -31.428, 1.054, 31.659, -7.42803, 1.054, 2.65898, -5.92803, 1.054, 2.90898, -0.928026, 1.054, 28.909, 0.821974, 1.054, 29.659, 31.572, 1.054, 31.659, -4.67803, 1.054, 2.15898, -0.428026, 1.054, 28.409, 0.821974, 1.054, 28.659)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 4), PackedInt32Array(2, 4, 3), PackedInt32Array(3, 5, 2), PackedInt32Array(6, 5, 3), PackedInt32Array(6, 3, 7), PackedInt32Array(7, 3, 8), PackedInt32Array(8, 3, 9), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(14, 0, 1), PackedInt32Array(14, 15, 0), PackedInt32Array(0, 15, 16), PackedInt32Array(0, 16, 12), PackedInt32Array(0, 12, 13), PackedInt32Array(11, 17, 10), PackedInt32Array(10, 17, 18), PackedInt32Array(19, 7, 20), PackedInt32Array(20, 7, 21), PackedInt32Array(21, 7, 8), PackedInt32Array(21, 8, 18), PackedInt32Array(18, 17, 21), PackedInt32Array(16, 15, 20), PackedInt32Array(20, 15, 19)]
 agent_max_slope = 61.85
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dqds2"]
@@ -31,6 +34,7 @@ background_mode = 2
 sky = SubResource("Sky_lk4bk")
 
 [node name="Arena" type="Node3D"]
+script = ExtResource("1_dpdex")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_a4kl0")

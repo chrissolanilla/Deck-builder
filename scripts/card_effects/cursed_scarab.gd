@@ -1,47 +1,88 @@
 extends BaseMonster
-
+#inherited attributes
+#var level: int
+#var attack: int
+#var defense: int
+#var archetype: String
+#var monster_name: String
+#var scene_path: String
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-
-var move_speed = 2.0
-var gravity = -9.8
-
+#@onready var nav_agent = $NavigationAgent3D
+var target: CharacterBody3D
+var move_speed:float = 3.0
+var gravity:float = -9.8
+var parent
+var team: String 
 # Time in seconds between direction changes
-var direction_change_interval = 2.0
-var time_since_direction_change = 0.0
-
+var direction_change_interval:float = 2.0
+var time_since_direction_change:float = 0.0
+@onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
+var attack_range = 2.2
 var current_direction = Vector3.ZERO
-
+var debug =0
 func _ready():
+	
 	print("Cursed Scarab ready!")
 	animation_player.play("IdleSpider")
+	parent = get_parent()
+	print("parent is : ", parent)
+	if debug == 1:
+		team = "player"
+		target = $"../Player"
+		return
+	if parent.name =="DeckManager":
+		team = "player"
+		target = AiDeckManager.getPlayer()
+		print("target is: ", target)
+		print("I am on team player")
+	else:
+		team = "robot"
+		target = DeckManager.getPlayer()
+		print("I am on team robot")
+
 
 func _physics_process(delta: float) -> void:
 	# Apply gravity
+		# Verify nav_agent and target are available
+		
+	if nav_agent == null:
+		print("Error: NavigationAgent3D is null!")
+		return
+	if target == null:
+		print("Error: Target is null!")
+		return
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
 		velocity.y = 0
-
-	# Update the timer for direction change
-	time_since_direction_change += delta
-	if time_since_direction_change >= direction_change_interval:
-		# Choose a new random direction
-		current_direction = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized()
-		time_since_direction_change = 0.0  # Reset the timer
-
-	# Apply the current direction to movement
-	velocity.x = current_direction.x * move_speed
-	velocity.z = current_direction.z * move_speed
+		
+	
+	if _target_in_range(target):
+		print("we will attack: ", target)
+		attack_player(30, target)
+		queue_free()
+		
+	var direction = (target.global_transform.origin - global_transform.origin).normalized()
+	velocity.x = direction.x * move_speed
+	velocity.z = direction.z * move_speed
+	
 	move_and_slide()
 
-	# Rotate the spider to face the current movement direction
-	if current_direction.length() > 0:
-		# Calculate the rotation angle on the Y axis
-		var target_rotation_y = atan2(current_direction.x, current_direction.z)
+	# Rotate to face target
+	if direction.length() > 0:
+		var target_rotation_y = atan2(direction.x, direction.z)
 		rotation.y = target_rotation_y
-
-	# Play the walking or idle animation based on movement
-	if current_direction.length() > 0:
-		animation_player.play("WalkSpider")
-	else:
+	## Play the walking or idle animation based on movement
+	if velocity.x ==0 or velocity.z ==0:
 		animation_player.play("IdleSpider")
+	else:
+		animation_player.play("WalkSpider")
+
+func attack_player(amount:int, player:CharacterBody3D):
+	if player.has_method("take_damage"):
+		player.take_damage(amount)
+		print(player.name, " took ", amount, " amount of damage")
+		
+func _target_in_range(target:CharacterBody3D):
+	return global_position.distance_to(target.global_position) < attack_range
+	

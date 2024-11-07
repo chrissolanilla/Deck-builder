@@ -10,14 +10,26 @@ var playerLocal: CharacterBody3D
 var negated: bool = false
 var negateCount = 0
 var cardInstance
+var navAgent: NavigationRegion3D
+
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
 
+func setNavAgent(nav:NavigationRegion3D)-> void:
+	navAgent = nav
+	
+func getNavAgent()-> NavigationRegion3D:
+	return navAgent
+	
+func getPlayer()-> CharacterBody3D:
+	return playerLocal
+	
 func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 	# Manually populate the AI's deck with specific cards
 	var cards = [
 		#"res://assets/cards/MetaData/Cursed_scarab.tres",
 		"res://assets/cards/MetaData/Heal.tres",
 		"res://assets/cards/MetaData/Rage.tres",
+		"res://assets/cards/MetaData/Cursed_scarab.tres",
 	]
 	#add each card in his deck list 3 times. 
 	for card in cards:

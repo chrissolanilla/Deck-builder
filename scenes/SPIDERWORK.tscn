@@ -1415,3 +1415,5 @@ libraries = {
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_q4hg1")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

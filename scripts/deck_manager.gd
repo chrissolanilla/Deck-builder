@@ -11,6 +11,9 @@ var negated: bool = false
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
 var cardInstance
 
+func getPlayer()-> CharacterBody3D:
+	return playerLocal
+	
 func setDeck(newDeck: Array[CardMetaData]) -> void:
 	deck = newDeck
 
