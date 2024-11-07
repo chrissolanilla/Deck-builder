@@ -17,7 +17,7 @@ var team: String
 var direction_change_interval:float = 2.0
 var time_since_direction_change:float = 0.0
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
-var attack_range = 2.2
+var attack_range = 3.2
 var current_direction = Vector3.ZERO
 var debug =0
 func _ready():
