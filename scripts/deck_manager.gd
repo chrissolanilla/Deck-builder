@@ -59,7 +59,6 @@ func create3DCard(metadata: CardMetaData):
 	arena.add_child(card_scene) #this will spawn a random floating card in the arena
 	return card_scene
 
-
 # Core load function (doesn't handle UI)
 func loadCurrentDeck(deckArray: Array) -> Array:
 	if not FileAccess.file_exists("user://savegame.data"):
@@ -140,5 +139,6 @@ func _process(delta: float) -> void:
 				cardInstance.queue_free()
 				return
 			current_spell.resolve_spell(current_spell.playerLocal, current_spell.enemyLocal)
+			await get_tree().create_timer(3).timeout
 			current_spell.queue_free()  # Free the spell instance after it resolves
 			cardInstance.queue_free()

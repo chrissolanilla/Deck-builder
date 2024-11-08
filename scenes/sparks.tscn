@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://dx4s3mv3cwsm6"]
+
+[ext_resource type="Texture2D" uid="uid://ctiv7ejjl5ihj" path="res://assets/cards/MetaData/Flare00.PNG" id="1_0wurx"]
+[ext_resource type="Script" path="res://scenes/sparks.gd" id="1_wk5k4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8otf"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_0wurx")
+billboard_keep_scale = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5oi0g"]
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 273.1
+angle_max = 318.1
+gravity = Vector3(0, -5, 0)
+scale_min = 0.02
+scale_max = 0.1
+color = Color(1, 0.942, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_losx3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ii3p"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_0wurx")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_sdu67"]
+_data = [Vector2(0.0362319, 0), 0.0, 0.0, 0, 0, Vector2(0.942029, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jyuue"]
+curve = SubResource("Curve_sdu67")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0pygv"]
+lifetime_randomness = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_jyuue")
+color = Color(1, 1, 0.0235294, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_g7p70"]
+
+[node name="SparksVFX" type="Node3D"]
+script = ExtResource("1_wk5k4")
+
+[node name="Sparks" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_w8otf")
+amount = 160
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_5oi0g")
+draw_pass_1 = SubResource("QuadMesh_losx3")
+
+[node name="Flare" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_7ii3p")
+amount = 4
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_0pygv")
+draw_pass_1 = SubResource("QuadMesh_g7p70")
