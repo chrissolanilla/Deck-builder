@@ -11,3 +11,9 @@ func _ready() -> void:
 	AiDeckManager.setNavAgent(navigation_region_3d)
 	print("we set player to: ", player, "and robot to: ", robot, "and nav agent to: ", navigation_region_3d)
 	pass # Replace with function body.
+
+func _process(delta: float) -> void:
+	if !player:
+		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+	if !robot:
+		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")

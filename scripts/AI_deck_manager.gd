@@ -111,6 +111,8 @@ func setCurrentCardInstance(instanceParam)-> void:
 func _process(delta: float) -> void:
 	#print("in the process function")
 	#print("current spell is : ", current_spell)
+	if !playerLocal:
+		return
 	if current_spell == null:
 		#print("current spell is null right now")
 		return
@@ -134,6 +136,10 @@ func _process(delta: float) -> void:
 			print("Resolving spell: ", current_spell.spell_name)
 			is_spell_active = false
 			set_process(false)  # Disable process
+			if !current_spell.playerLocal:
+				current_spell.queue_free()
+				cardInstance.queue_free()
+				return
 			current_spell.resolve_spell(current_spell.playerLocal)
 			current_spell.queue_free()  # Free the spell instance after it resolves
 			cardInstance.queue_free()

@@ -1,6 +1,7 @@
 extends VBoxContainer
 var deck: Array[CardMetaData] = []
 func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	#load the savegame.data and see if we have atleast 5 cards in the file.
 	deck = DeckManager.loadCurrentDeck(deck)
 	#this condition fixes the null error when playing game
