@@ -140,5 +140,7 @@ func _process(delta: float) -> void:
 				return
 			current_spell.resolve_spell(current_spell.playerLocal, current_spell.enemyLocal)
 			await get_tree().create_timer(3).timeout
-			current_spell.queue_free()  # Free the spell instance after it resolves
-			cardInstance.queue_free()
+			if current_spell != null:
+				current_spell.queue_free()  # Free the spell instance after it resolves
+			if cardInstance != null:
+				cardInstance.queue_free()

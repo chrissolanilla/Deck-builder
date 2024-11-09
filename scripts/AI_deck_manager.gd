@@ -29,6 +29,7 @@ func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 		#"res://assets/cards/MetaData/Cursed_scarab.tres",
 		"res://assets/cards/MetaData/Heal.tres",
 		#"res://assets/cards/MetaData/Rage.tres",
+		#"res://assets/cards/MetaData/counter_spell.tres"
 	]
 	#add each card in his deck list 3 times. 
 	for card in cards:
