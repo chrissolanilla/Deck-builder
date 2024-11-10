@@ -106,7 +106,7 @@ func _physics_process(delta: float) -> void:
 			instance = bullet.instantiate()
 			instance.position = rifle_barrel.global_position
 			instance.transform.basis = rifle_barrel.global_transform.basis
-			instance.direction = transform.basis * Vector3(0, 0, -SPEED)
+			instance.direction = instance.transform.basis * Vector3(0, 0, -SPEED)
 			get_parent().add_child(instance)
 
 # Function to handle keyboard input
