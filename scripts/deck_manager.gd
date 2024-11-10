@@ -87,9 +87,6 @@ func loadCurrentDeck(deckArray: Array) -> Array:
 
 func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D, enemy:CharacterBody3D, start_up_time: float) -> void:
 	print("spell is :", currentSpell.spell_name, "spell count down is ",  currentSpell.start_up)
-	if is_spell_active:
-		print("a spell is alreadyactive")
-		return
 	print("starting countdown for spell: ", start_up_time)
 	is_spell_active = true
 	countdown_time = start_up_time
@@ -113,34 +110,35 @@ func _process(delta: float) -> void:
 	if !playerLocal:
 		return
 		
-	if current_spell == null:
-		#print("current spell is null right now")
-		return
-	
 	if negated:
 		current_spell.change_sprite(cardInstance, DEFAULT_CARD)
-		current_spell= null
+		current_spell = null
 		cardInstance = null
 		negated = false
-		is_spell_active= false
-		#somehow make negated false again after we negate our card but dont resolve the spell
+		is_spell_active = false
+		return
+	
+	# Only run countdown and spell resolution if a spell is active
 	if is_spell_active and countdown_time > 0:
 		countdown_time -= delta
 		if abs(countdown_time - round(countdown_time)) < 0.006:
 			print("Time remaining for spell to resolve: ", round(countdown_time))
-
-
-		if countdown_time <= 0:
+			
+		if countdown_time <= 0 and current_spell != null:
 			print("Resolving spell: ", current_spell.spell_name)
 			is_spell_active = false
-			set_process(false)  # Disable process
-			if(!current_spell.playerLocal):
-				current_spell.queue_free()
-				cardInstance.queue_free()
-				return
+			set_process(false)  # Disable process after spell completes
+
+			# Check for player reference and free resources appropriately
 			current_spell.resolve_spell(current_spell.playerLocal, current_spell.enemyLocal)
 			await get_tree().create_timer(3).timeout
-			if current_spell != null:
-				current_spell.queue_free()  # Free the spell instance after it resolves
-			if cardInstance != null:
+			if current_spell:
+				current_spell.queue_free()
+				current_spell = null
+			if cardInstance:
 				cardInstance.queue_free()
+				cardInstance = null
+			
+			# Free resources after resolution or timeout
+	else:
+		is_spell_active = false  # Ensure it's false if no spell is active or countdown is over
