@@ -33,7 +33,7 @@ func _process(_delta: float) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		self.queue_free()
 		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
-		
+
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -54,7 +54,7 @@ func _ready() -> void:
 	draw_timer.start()
 	#set the hand in the hotbar
 	card_container.cards = hand
-	
+
 	# Get the Rifle node
 	rifle = $Camera3D/Rifle
 	rifle_anim = $Camera3D/Rifle/AnimationPlayer
@@ -99,7 +99,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
-	
+
 	if Input.is_action_pressed("shoot"):
 		if !rifle_anim.is_playing():
 			rifle_anim.play("shoot")
@@ -130,7 +130,9 @@ func select_card_by_index(index: int) -> void:
 				var monster_instance = monster_script.new()
 				monster_instance.setupAttributes(selected_card)
 				var current_scene = get_tree().root.get_child(0)  # Get the root scene manually since its null when i try otherwise
-				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))  # the last param is the scale of the monster
+				monster_instance.call_deferred("spawnMonster", self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))
+
+				# monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))  # the last param is the scale of the monster
 
 		elif selected_card.card_type == "spell":
 			if DeckManager.getIfSpellActive():
@@ -152,7 +154,7 @@ func select_card_by_index(index: int) -> void:
 		card_container._update_card_visuals()
 	else:
 		print("Invalid card index")
-		
+
 
 func take_damage(amount:int):
 	if amount > health:

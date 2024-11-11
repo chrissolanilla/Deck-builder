@@ -7,7 +7,6 @@ extends BaseMonster
 #var monster_name: String
 #var scene_path: String
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-#@onready var nav_agent = $NavigationAgent3D
 var target: CharacterBody3D
 var move_speed:float = 3.0
 var gravity:float = -9.8
@@ -34,20 +33,12 @@ func _ready():
 		team = "player"
 		target = AiDeckManager.getPlayer()
 		print("target is: ", target)
-		print("I am on team player")
 	else:
 		team = "robot"
 		target = DeckManager.getPlayer()
-		print("I am on team robot")
-
 
 func _physics_process(delta: float) -> void:
-	# Apply gravity
-		# Verify nav_agent and target are available
 		
-	if nav_agent == null:
-		print("Error: NavigationAgent3D is null!")
-		return
 	if target == null:
 		print("Error: Target is null!")
 		return
@@ -58,7 +49,6 @@ func _physics_process(delta: float) -> void:
 		
 	
 	if _target_in_range(target):
-		print("we will attack: ", target)
 		attack_player(30, target)
 		queue_free()
 		
@@ -81,7 +71,6 @@ func _physics_process(delta: float) -> void:
 func attack_player(amount:int, player:CharacterBody3D):
 	if player.has_method("take_damage"):
 		player.take_damage(amount)
-		print(player.name, " took ", amount, " amount of damage")
 		
 func _target_in_range(target:CharacterBody3D):
 	return global_position.distance_to(target.global_position) < attack_range

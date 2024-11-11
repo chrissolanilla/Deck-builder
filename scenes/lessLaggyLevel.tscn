@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://bj287m0p0gj7y"]
+
+[ext_resource type="Script" path="res://level3/level.gd" id="1_ctldq"]
+[ext_resource type="PackedScene" uid="uid://rs8wwabfby6g" path="res://scenes/grass.tscn" id="2_5b8ue"]
+[ext_resource type="PackedScene" uid="uid://djfalpkhwtfhy" path="res://scenes/water.tscn" id="3_ycy02"]
+[ext_resource type="PackedScene" uid="uid://byb6y3ktbrtsn" path="res://scenes/MainCharacter.tscn" id="4_u7caa"]
+[ext_resource type="PackedScene" uid="uid://bdbh5bs37yimw" path="res://scenes/Hotbar_scene.tscn" id="5_ejx74"]
+[ext_resource type="PackedScene" uid="uid://givrne4csu75" path="res://scenes/robot.tscn" id="6_0tpvv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xx5t1"]
+albedo_color = Color(1, 0.367788, 0.300217, 1)
+emission_enabled = true
+emission = Color(1, 0.00536225, 0.111519, 1)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_p07hk"]
+vertices = PackedVector3Array(-43.4987, -14.1369, -44.9987, -41.4987, -14.1369, -44.9987, -41.4987, -14.1369, -499.499, -499.499, -14.1369, -43.4987, -43.7487, -14.1369, -43.2487, -499.499, -14.1369, -499.499, 43.2513, -14.1369, -44.9987, 43.2513, -14.1369, -499.499, 45.2513, -14.1369, -44.9987, 45.5013, -14.1369, -42.7487, 499.501, -14.1369, -42.7487, 499.501, -14.1369, -499.499, -9.74866, 2.36314, -23.7487, -8.99866, 2.36314, -23.7487, -8.99866, 2.36314, -43.9987, -9.99866, 2.36314, -22.9987, -42.7487, 2.36314, -43.9987, -42.7487, 2.36314, -22.9987, -8.24866, 2.36314, -23.4987, 44.5013, 2.36314, -43.9987, -8.24866, 2.36314, -22.4987, -8.74866, 2.36314, -22.2487, -8.74866, 2.36314, 43.2513, 44.5013, 2.36314, 43.2513, -42.4987, -14.1369, -43.7487, -42.4987, -14.1369, 43.0013, 44.2513, -14.1369, 43.0013, 44.2513, -14.1369, -43.7487, -499.499, -14.1369, 42.7513, -43.7487, -14.1369, 42.5013, 45.5013, -14.1369, 42.0013, 499.501, -14.1369, 42.0013, -9.49866, 2.36314, -22.2487, -42.7487, 2.36314, 43.2513, 45.5013, -14.1369, 44.0013, 43.7513, -14.1369, 44.2513, 44.0013, -14.1369, 499.501, 499.501, -14.1369, 499.501, -42.2487, -14.1369, 499.501, -41.9987, -14.1369, 44.2513, -43.7487, -14.1369, 44.0013, -499.499, -14.1369, 499.501)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 4, 2), PackedInt32Array(2, 4, 3), PackedInt32Array(2, 3, 5), PackedInt32Array(2, 7, 1), PackedInt32Array(1, 7, 6), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(11, 8, 7), PackedInt32Array(8, 6, 7), PackedInt32Array(14, 13, 12), PackedInt32Array(12, 15, 14), PackedInt32Array(14, 15, 17), PackedInt32Array(14, 17, 16), PackedInt32Array(13, 14, 18), PackedInt32Array(18, 14, 19), PackedInt32Array(20, 19, 21), PackedInt32Array(21, 19, 22), PackedInt32Array(22, 19, 23), PackedInt32Array(20, 18, 19), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25), PackedInt32Array(29, 28, 4), PackedInt32Array(4, 28, 3), PackedInt32Array(9, 10, 30), PackedInt32Array(30, 10, 31), PackedInt32Array(15, 32, 17), PackedInt32Array(17, 32, 33), PackedInt32Array(33, 32, 22), PackedInt32Array(32, 21, 22), PackedInt32Array(34, 30, 31), PackedInt32Array(34, 31, 35), PackedInt32Array(35, 31, 36), PackedInt32Array(36, 31, 37), PackedInt32Array(39, 38, 40), PackedInt32Array(40, 38, 41), PackedInt32Array(40, 41, 28), PackedInt32Array(28, 29, 40), PackedInt32Array(39, 35, 38), PackedInt32Array(38, 35, 36)]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ofm51"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_dxaaa"]
+sky_material = SubResource("ProceduralSkyMaterial_ofm51")
+
+[sub_resource type="Environment" id="Environment_dsxsi"]
+background_mode = 2
+sky = SubResource("Sky_dxaaa")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+volumetric_fog_albedo = Color(0.70473, 0.928113, 0.991765, 1)
+volumetric_fog_emission = Color(0.0208938, 0.208334, 0.246102, 1)
+
+[node name="level" type="Node3D"]
+script = ExtResource("1_ctldq")
+
+[node name="Sun" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 613, 28)
+material_override = SubResource("StandardMaterial3D_xx5t1")
+cast_shadow = 0
+radius = 27.527
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_p07hk")
+
+[node name="Map" type="Node3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.807457, 1.13943, -0.471373)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="NavigationRegion3D/Map"]
+environment = SubResource("Environment_dsxsi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="NavigationRegion3D/Map"]
+
+[node name="Grass" type="Node3D" parent="NavigationRegion3D/Map"]
+
+[node name="Grass" parent="NavigationRegion3D/Map/Grass" instance=ExtResource("2_5b8ue")]
+transform = Transform3D(44, 0, 0, 0, 21.94, 0, 0, 0, 44, 0, -21.0863, 0)
+
+[node name="Water" parent="NavigationRegion3D/Map" instance=ExtResource("3_ycy02")]
+transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, -0.807457, -15.6345, 0.471373)
+
+[node name="Player" parent="NavigationRegion3D" instance=ExtResource("4_u7caa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.88035, 5.76668, -6.07685)
+
+[node name="CardContainer" parent="NavigationRegion3D" instance=ExtResource("5_ejx74")]
+metadata/_edit_use_anchors_ = true
+
+[node name="Robot" parent="NavigationRegion3D" instance=ExtResource("6_0tpvv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.04553, 3.34348, -23.0596)
