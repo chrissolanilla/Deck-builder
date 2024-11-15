@@ -1,9 +1,11 @@
 extends Control  # or your relevant base class
 
+
 const MAX_SLOTS = 7
 var cards = []  # Holds the cards to be displayed in the hotbar
 #if we want to show a red x instead
 # var default_texture = preload("res://assets/cards/portraits/defaultCard(1).png")
+
 
 # Function to handle card setup
 func _ready():
@@ -28,3 +30,5 @@ func _update_card_visuals() -> void:
 			# texture_rect.texture = default_texture
 			texture_rect.texture = null
 			number_label.text = ""
+			
+			

@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2otmyprokp5g"]
+[gd_scene load_steps=6 format=3 uid="uid://d2otmyprokp5g"]
 
+[ext_resource type="Script" path="res://scenes/world_spell_card.gd" id="1_lgimw"]
 [ext_resource type="Texture2D" uid="uid://by5bsngvrio2k" path="res://assets/cards/portraits/Cursed_Scarab.png" id="2_aswuq"]
 [ext_resource type="AudioStream" uid="uid://b6qn3pa71n6bm" path="res://assets/textures/sounds/EffectActivate.mp3" id="2_lkpuo"]
+[ext_resource type="PackedScene" uid="uid://dp0tko1qcs6gu" path="res://scenes/CooldownBar.tscn" id="4_1gorf"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_am4r8"]
+viewport_path = NodePath("SubViewport")
 
 [node name="WorldSpellCard" type="Node3D"]
+script = ExtResource("1_lgimw")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("2_lkpuo")
@@ -17,3 +23,14 @@ texture = ExtResource("2_aswuq")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0656927)
 flip_h = true
 texture = ExtResource("2_aswuq")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+
+[node name="CooldownBar" parent="SubViewport" instance=ExtResource("4_1gorf")]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0107558, 0.0539387, -0.0277011)
+offset = Vector2(0, -600)
+texture = SubResource("ViewportTexture_am4r8")

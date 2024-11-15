@@ -60,6 +60,10 @@ func activate_spell(player: CharacterBody3D, enemy: CharacterBody3D, spell_card:
 	else:
 		print("doing the thing for the robot")
 		AiDeckManager.startCountDown(self,player,self.start_up)
+		
+		 # Start the cooldown directly on spell_instance
+	if spell_instance.has_method("start_cooldown"):
+		spell_instance.start_cooldown(self.start_up)
 
 func resolve_spell(player: CharacterBody3D, enemy: CharacterBody3D = null) -> void:
 	if not initialized:
