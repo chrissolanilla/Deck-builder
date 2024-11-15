@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq10s6dmjnp80"]
+
+[ext_resource type="Texture2D" uid="uid://cojmeyox20kw0" path="res://addons/radial_progress/icon.png" id="1_52k4y"]
+
+[node name="CooldownUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+fill_mode = 4
+texture_under = ExtResource("1_52k4y")
+texture_progress = ExtResource("1_52k4y")

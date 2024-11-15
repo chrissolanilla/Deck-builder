@@ -90,6 +90,8 @@ func startCountDown(currentSpell: BaseSpell, player:CharacterBody3D, enemy:Chara
 	print("starting countdown for spell: ", start_up_time)
 	is_spell_active = true
 	countdown_time = start_up_time
+	var spell_scene = load("res://scenes/World_spell_card.tscn")
+	var spell_instance = spell_scene.instantiate()
 	#keep track of the curernt spell?
 	current_spell = currentSpell
 	current_spell.playerLocal = player

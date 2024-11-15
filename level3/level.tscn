@@ -4209,6 +4209,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.04553, 3.34348, -23.0596)
 
 [node name="Fire_red" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0393789, -1.03654, -0.172943)
+visible = false
 
 [node name="StaticFlame" type="GPUParticles3D" parent="Fire_red"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0310459, -0.794235, -0.114418)
