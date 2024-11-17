@@ -177,3 +177,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 99
 text = "7"
+
+[node name="Score slot" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/Score slot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 101.0
+offset_top = -65.0
+offset_right = 447.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 99
+text = "Score 0"

@@ -88,6 +88,12 @@ func take_damage(amount:int) -> void:
 		amount = health
 	health -= amount
 	healthbar.value = health
+	
+	  # Notify hotbar to increase the score
+	if amount > 0:
+		var hotbar = get_parent().get_node("CardContainer")  # Adjust path to match your scene structure
+		if hotbar != null:
+			hotbar.increase_score(amount)
 	if(health ==0):
 		queue_free()
 	
