@@ -26,7 +26,7 @@ func getPlayer()-> CharacterBody3D:
 func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 	# Manually populate the AI's deck with specific cards
 	var cards = [
-		#"res://assets/cards/MetaData/Cursed_scarab.tres",
+		"res://assets/cards/MetaData/Cursed_scarab.tres",
 		#"res://assets/cards/MetaData/Heal.tres",
 		#"res://assets/cards/MetaData/Rage.tres",
 		"res://assets/cards/MetaData/Sandstorm_Barrage.tres"

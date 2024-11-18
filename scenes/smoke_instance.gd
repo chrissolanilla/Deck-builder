@@ -28,6 +28,8 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		body.disorient(15)
 	elif team =="robot" and body.name == "Player":
 		body.disorient(15)
+	elif body.has_method("disorient") and body.name!= "Player" and body.name!= "Robot":
+		body.disorient(15)
 
 
 func _on_timer_timeout() -> void:

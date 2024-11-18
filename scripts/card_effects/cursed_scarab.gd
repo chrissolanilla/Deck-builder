@@ -6,6 +6,7 @@ extends BaseMonster
 #var archetype: String
 #var monster_name: String
 #var scene_path: String
+var disoriented:bool = false
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 var target: CharacterBody3D
 var move_speed:float = 3.0
@@ -52,6 +53,13 @@ func _physics_process(delta: float) -> void:
 		attack_player(30, target)
 		queue_free()
 		
+	## Play the walking or idle animation based on movement
+	if velocity.x ==0 or velocity.z ==0:
+		animation_player.play("IdleSpider")
+	else:
+		animation_player.play("WalkSpider")
+	if disoriented:
+		return
 	var direction = (target.global_transform.origin - global_transform.origin).normalized()
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
@@ -62,11 +70,6 @@ func _physics_process(delta: float) -> void:
 	if direction.length() > 0:
 		var target_rotation_y = atan2(direction.x, direction.z)
 		rotation.y = target_rotation_y
-	## Play the walking or idle animation based on movement
-	if velocity.x ==0 or velocity.z ==0:
-		animation_player.play("IdleSpider")
-	else:
-		animation_player.play("WalkSpider")
 
 func attack_player(amount:int, player:CharacterBody3D):
 	if player.has_method("take_damage"):
@@ -75,3 +78,23 @@ func attack_player(amount:int, player:CharacterBody3D):
 func _target_in_range(target:CharacterBody3D):
 	return global_position.distance_to(target.global_position) < attack_range
 	
+	
+func disorient(duration: float) -> void:
+	disoriented = true
+	print("Disorienting the robot for ", duration, " seconds")
+	velocity = Vector3.ZERO
+	move_and_slide()  # To stop any residual velocity
+	# Remove the target position to stop pathfinding
+	nav_agent.target_position = global_transform.origin  # Setting target to current position effectively "stops" it
+
+	# Use a Timer to re-enable movement after the duration
+	var disorient_timer = Timer.new()
+	add_child(disorient_timer)
+	disorient_timer.wait_time = duration
+	disorient_timer.one_shot = true
+	disorient_timer.connect("timeout", Callable(self, "_on_disorient_timeout"))
+	disorient_timer.start()
+
+func _on_disorient_timeout() -> void:
+	disoriented = false
+	print("spider done with this shit")
