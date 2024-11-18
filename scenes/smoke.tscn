@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://boouxc3llyi3n"]
+
+[ext_resource type="Script" path="res://scenes/smoke_instance.gd" id="1_gqbvt"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_5coic"]
+density = 1.5714
+albedo = Color(1, 1, 0.819608, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n7eqm"]
+size = Vector3(20, 10, 20)
+
+[node name="Smoke" type="Node3D"]
+script = ExtResource("1_gqbvt")
+
+[node name="FogVolume" type="FogVolume" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.88532, 0)
+size = Vector3(20, 10, 20)
+shape = 0
+material = SubResource("FogMaterial_5coic")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.88753, 0)
+shape = SubResource("BoxShape3D_n7eqm")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 15.0
+autostart = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

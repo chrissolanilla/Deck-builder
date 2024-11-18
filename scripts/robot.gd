@@ -24,6 +24,7 @@ enum State { APPROACH, MELEE, STRAFE, LOW_HEALTH, TARGET_LOW_HEALTH, JUMP }
 var state = State.APPROACH
 #walking animation name is xxx_001-noexp
 var attack_range = 2.0
+var disoriented: bool = false
 
 func _ready() -> void:
 	to_player = player.global_transform.origin - global_transform.origin
@@ -66,7 +67,7 @@ func _physics_process(delta):
 	#but it wont deal me damage until i ledave the attack range
 	elif _target_in_range():
 		state = State.MELEE
-	elif health>50:
+	elif health>50 and !disoriented:
 		state = State.APPROACH
 	
 	match state:
@@ -166,7 +167,7 @@ func play_spell_card(card: CardMetaData) -> void:
 		var current_scene = get_tree().root.get_child(1)
 		if current_scene:
 			spell_instance.activate_spell(self, player, card, current_scene, 5.0, Vector3(1, 1, 1))
-			spell_instance.resolve_spell(self, player)
+			#spell_instance.resolve_spell(self, player)
 			spell_instance.setupAttributes(card)
 		print("AI played spell card: ", card.card_name)
 		
@@ -292,3 +293,25 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		else:
 			strafe_stage = 1  # Set to strafe right
 			animation_player.play("strafe_right")
+
+func disorient(duration: float) -> void:
+	disoriented = true
+	print("Disorienting the robot for ", duration, " seconds")
+	state = null  # Disable the state machine temporarily
+	velocity = Vector3.ZERO
+	move_and_slide()  # To stop any residual velocity
+	# Remove the target position to stop pathfinding
+	nav_agent.target_position = global_transform.origin  # Setting target to current position effectively "stops" it
+
+	# Use a Timer to re-enable movement after the duration
+	var disorient_timer = Timer.new()
+	add_child(disorient_timer)
+	disorient_timer.wait_time = duration
+	disorient_timer.one_shot = true
+	disorient_timer.connect("timeout", Callable(self, "_on_disorient_timeout"))
+	disorient_timer.start()
+
+func _on_disorient_timeout() -> void:
+	disoriented = false
+	print("Robot disorient effect ended")
+	state = State.APPROACH  # Set the robot back to a state to continue normal behavior

@@ -9,6 +9,7 @@ var is_interrupted: bool = false
 var playerLocal: CharacterBody3D
 var enemyLocal: CharacterBody3D
 var initialized:bool = false
+var current_scene:Node 
 signal attributes_initialized
 
 func setupAttributes(metadata: CardMetaData) -> void:
@@ -41,6 +42,7 @@ func activate_spell(player: CharacterBody3D, enemy: CharacterBody3D, spell_card:
 		print("Scene is null!")
 		return
 
+	self.current_scene = current_scene
 	current_scene.add_child(spell_instance)
 	spell_instance.scale = scale
 

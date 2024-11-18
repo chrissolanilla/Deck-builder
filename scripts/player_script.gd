@@ -1,12 +1,15 @@
 extends CharacterBody3D
-
+var original_mouse_sensitivity = MOUSE_SENSITIVITY
 const SPEED = 5.0
 const JUMP_VELOCITY = 7.5
-const MOUSE_SENSITIVITY = 0.0010
+var MOUSE_SENSITIVITY = 0.0010
 const DRAW_INTERVAL = 15
 @onready var healthbar: ProgressBar = $Healthbar
 @onready var enemy: CharacterBody3D = $"../Robot"
-
+var wobble_timer: Timer
+var wobble_intensity = 0.05  # How strong the wobble is
+var wobble_frequency = 5.0  # Frequency of the wobble effect (how fast it oscillates)
+var wobble_elapsed_time = 0.0
 var health = 100
 var attack = 20
 var card_container;
@@ -20,6 +23,7 @@ var instance
 var rifle: Node3D
 var rifle_anim: AnimationPlayer
 var rifle_barrel:RayCast3D
+var disoriented:bool
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
@@ -146,7 +150,7 @@ func select_card_by_index(index: int) -> void:
 			var spell_instance = spell_script.new()
 			var current_scene = get_tree().root.get_child(0)
 			spell_instance.activate_spell(self, enemy, selected_card, current_scene, 5.0, Vector3(1,1,1))
-			spell_instance.resolve_spell(self, enemy)
+			#spell_instance.resolve_spell(self, enemy)
 			spell_instance.setupAttributes(selected_card)
 
 		# Handle other card types (spells, traps) similarly
@@ -161,3 +165,52 @@ func take_damage(amount:int):
 			amount = health
 	health-=amount
 	healthbar.value = health
+	
+func disorient(duration: float) -> void:
+	if disoriented:
+		return
+
+	disoriented = true
+	original_mouse_sensitivity = MOUSE_SENSITIVITY  # Store original sensitivity
+	MOUSE_SENSITIVITY *= 0.1  # Reduce sensitivity to make looking delayed/sluggish
+
+	# Start a Timer to end the disorientation after `duration` seconds
+	var disorient_timer = Timer.new()
+	add_child(disorient_timer)
+	disorient_timer.wait_time = duration
+	disorient_timer.one_shot = true
+	disorient_timer.connect("timeout", Callable(self, "_on_disorient_timeout"))
+	disorient_timer.start()
+
+	# Start the wobble effect
+	wobble_elapsed_time = 0.0
+	wobble_timer = Timer.new()
+	add_child(wobble_timer)
+	wobble_timer.wait_time = 0.01  # Update every 10ms to create smooth movement
+	wobble_timer.connect("timeout", Callable(self, "_on_wobble_timeout"))
+	wobble_timer.start()
+
+	print("Disorienting the player for ", duration, " seconds")
+
+func _on_disorient_timeout() -> void:
+	# Reset mouse sensitivity to its original value
+	MOUSE_SENSITIVITY = original_mouse_sensitivity
+	disoriented = false
+	print("Player disorient effect ended")
+	
+func _on_wobble_timeout() -> void:
+	if not disoriented:
+		wobble_timer.stop()
+		return
+
+	# Update elapsed time for sine wave calculation
+	wobble_elapsed_time += wobble_timer.wait_time
+
+	# Calculate sine wave offsets
+	var wobble_x = sin(wobble_elapsed_time * wobble_frequency) * wobble_intensity
+	var wobble_y = cos(wobble_elapsed_time * wobble_frequency * 0.5) * wobble_intensity
+
+	# Apply wobble to camera rotation
+	var camera = $Camera3D
+	camera.rotation_degrees.x += wobble_x
+	camera.rotation_degrees.z += wobble_y
