@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bo1m53daag0uw"
-valid=false
+path="res://.godot/imported/Flare00.PNG-a9e7e40e0a389922a0344d6eb66891a9.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/cards/portraits/Flare00.PNG"
+dest_files=["res://.godot/imported/Flare00.PNG-a9e7e40e0a389922a0344d6eb66891a9.ctex"]
 
 [params]
 

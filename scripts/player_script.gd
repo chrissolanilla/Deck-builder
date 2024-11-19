@@ -163,6 +163,7 @@ func select_card_by_index(index: int) -> void:
 func take_damage(amount:int):
 	if amount > health:
 			amount = health
+	$Camera3D.add_trauma(amount / 50.0)
 	health-=amount
 	healthbar.value = health
 	
@@ -200,6 +201,7 @@ func _on_disorient_timeout() -> void:
 	
 func _on_wobble_timeout() -> void:
 	if not disoriented:
+		$Camera3D.reset_wobble()
 		wobble_timer.stop()
 		return
 
@@ -211,6 +213,4 @@ func _on_wobble_timeout() -> void:
 	var wobble_y = cos(wobble_elapsed_time * wobble_frequency * 0.5) * wobble_intensity
 
 	# Apply wobble to camera rotation
-	var camera = $Camera3D
-	camera.rotation_degrees.x += wobble_x
-	camera.rotation_degrees.z += wobble_y
+	$Camera3D.add_wobble(wobble_x, wobble_y)
