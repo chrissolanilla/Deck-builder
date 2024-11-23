@@ -27,6 +27,9 @@ script = ExtResource("2_kessn")
 [node name="Rifle" parent="Camera3D" instance=ExtResource("2_v57em")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.274401, -0.943861)
 
+[node name="Timer" type="Timer" parent="Camera3D"]
+wait_time = 0.5
+
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("2_ei8y0")
 autoplay = true
@@ -38,3 +41,5 @@ offset_right = -491.0
 offset_bottom = 531.0
 scale = Vector2(1.00163, 1)
 show_percentage = true
+
+[connection signal="timeout" from="Camera3D/Timer" to="." method="_on_timer_timeout"]

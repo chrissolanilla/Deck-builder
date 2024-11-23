@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://chiffqod63ivr"
-valid=false
+path="res://.godot/imported/Spider.blend-d8ae282a046fb513e4d7877e36962384.scn"
 
 [deps]
 
 source_file="res://scenes/Spider.blend"
+dest_files=["res://.godot/imported/Spider.blend-d8ae282a046fb513e4d7877e36962384.scn"]
 
 [params]
 

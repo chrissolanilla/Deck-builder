@@ -19,7 +19,7 @@ var hand: Array[CardMetaData]
 var draw_timer: Timer
 var bullet = load("res://scenes/bullet.tscn")
 var instance
-
+@onready var wobleTimer: Timer = $Camera3D/Timer
 var rifle: Node3D
 var rifle_anim: AnimationPlayer
 var rifle_barrel:RayCast3D
@@ -161,6 +161,8 @@ func select_card_by_index(index: int) -> void:
 
 
 func take_damage(amount:int):
+	$Camera3D.isHit = true
+	wobleTimer.start()
 	if amount > health:
 			amount = health
 	$Camera3D.add_trauma(amount / 50.0)
@@ -214,3 +216,8 @@ func _on_wobble_timeout() -> void:
 
 	# Apply wobble to camera rotation
 	$Camera3D.add_wobble(wobble_x, wobble_y)
+
+
+func _on_timer_timeout() -> void:
+	$Camera3D.isHit = false
+	pass # Replace with function body.

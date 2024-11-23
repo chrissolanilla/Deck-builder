@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://yv4ksea5f0jm"
-valid=false
+path="res://.godot/imported/mutant.blend-88a0753b2b39bb0c247d8c7d90f63035.scn"
 
 [deps]
 
 source_file="res://level2/mutant.blend"
+dest_files=["res://.godot/imported/mutant.blend-88a0753b2b39bb0c247d8c7d90f63035.scn"]
 
 [params]
 

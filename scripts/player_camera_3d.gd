@@ -10,6 +10,7 @@ var wobble_x = 0.0
 var wobble_y = 0.0
 
 var save_rotation: Quaternion
+var isHit:bool = false 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,8 +18,10 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	trauma = max(trauma - decay * delta, 0)
-	shake()
+	if isHit:
+		trauma = max(trauma - decay * delta, 0)
+		shake()
+	pass
 
 func add_trauma(delta: float) -> void:
 	trauma = min(trauma + delta, 1.0)
