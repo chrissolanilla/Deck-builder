@@ -174,6 +174,8 @@ func disorient(duration: float) -> void:
 		return
 
 	disoriented = true
+	$Camera3D.isHit = true
+	wobleTimer.start(15)
 	original_mouse_sensitivity = MOUSE_SENSITIVITY  # Store original sensitivity
 	MOUSE_SENSITIVITY *= 0.1  # Reduce sensitivity to make looking delayed/sluggish
 
