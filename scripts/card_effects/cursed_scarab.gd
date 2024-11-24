@@ -12,7 +12,7 @@ var target: CharacterBody3D
 var move_speed:float = 3.0
 var gravity:float = -9.8
 var parent
-var team: String 
+var team: String
 # Time in seconds between direction changes
 var direction_change_interval:float = 2.0
 var time_since_direction_change:float = 0.0
@@ -21,7 +21,7 @@ var attack_range = 3.2
 var current_direction = Vector3.ZERO
 var debug =0
 func _ready():
-	
+
 	print("Cursed Scarab ready!")
 	animation_player.play("IdleSpider")
 	parent = get_parent()
@@ -39,20 +39,28 @@ func _ready():
 		target = DeckManager.getPlayer()
 
 func _physics_process(delta: float) -> void:
-		
+
 	if target == null:
 		print("Error: Target is null!")
+		if parent.name =="DeckManager":
+			team = "player"
+			target = AiDeckManager.getPlayer()
+			print("target is: ", target)
+		else:
+			team = "robot"
+			target = DeckManager.getPlayer()
+
 		return
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
 		velocity.y = 0
-		
-	
+
+
 	if _target_in_range(target):
 		attack_player(30, target)
 		queue_free()
-		
+
 	## Play the walking or idle animation based on movement
 	if velocity.x ==0 or velocity.z ==0:
 		animation_player.play("IdleSpider")
@@ -63,7 +71,7 @@ func _physics_process(delta: float) -> void:
 	var direction = (target.global_transform.origin - global_transform.origin).normalized()
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
-	
+
 	move_and_slide()
 
 	# Rotate to face target
@@ -74,11 +82,11 @@ func _physics_process(delta: float) -> void:
 func attack_player(amount:int, player:CharacterBody3D):
 	if player.has_method("take_damage"):
 		player.take_damage(amount)
-		
+
 func _target_in_range(target:CharacterBody3D):
 	return global_position.distance_to(target.global_position) < attack_range
-	
-	
+
+
 func disorient(duration: float) -> void:
 	disoriented = true
 	print("Disorienting the robot for ", duration, " seconds")
