@@ -9,12 +9,15 @@ var jump_stage = 0
 var strafe_stage = 0
 var to_player 
 var perpendicular_dir 
+@onready var sprite_3d: Sprite3D = $Sprite3D
+@onready var skeleton_3d: Skeleton3D = $PlayerModel/Robot_Skeleton/Skeleton3D
 @onready var animation_player: AnimationPlayer = $PlayerModel/AnimationPlayer
 @onready var nav_agent = $NavigationAgent3D
 @onready var player: CharacterBody3D = $"../Player"
 @onready var healthbar: ProgressBar = $SubViewport/Healthbar
 @onready var bullet = load("res://scenes/bullet.tscn")
 @onready var robot_body = $"PlayerModel/Robot_Skeleton/Skeleton3D/00Robot_Body_008"
+@onready var animation_tree: AnimationTree = $PlayerModel/AnimationTree
 var instance
 var draw_timer: Timer
 var action_timer: Timer
@@ -53,7 +56,14 @@ func _ready() -> void:
 	action_timer.connect("timeout", Callable(self, "_on_action_timer_timeout"))
 	action_timer.start()
 
+
 func _physics_process(delta):
+	var _position = skeleton_3d.global_position
+	print(_position)
+	var _offset = Vector2(_position.x, _position.y)
+	print(_offset)
+	sprite_3d.global_position = _position+Vector3(0,3,0)
+	
 	to_player = player.global_transform.origin - global_transform.origin
 	perpendicular_dir = to_player.cross(Vector3.UP).normalized()  # Perpendicular to player direction
 	#switch state to attack if in range
@@ -73,8 +83,12 @@ func _physics_process(delta):
 	match state:
 		State.APPROACH:
 			approach_player()
+			setAnimationParamsToZero()
+			animation_tree.set("parameters/Run/blend_amount", 1)
 		State.MELEE:
 			melee_attack()
+			setAnimationParamsToZero()
+			animation_tree.set("parameters/Attack/blend_amount", 1)
 		State.STRAFE:
 			strafe()
 		State.LOW_HEALTH:
@@ -83,6 +97,17 @@ func _physics_process(delta):
 			target_low_health_behavior()
 		State.JUMP:
 			jump_behavior()
+			
+func setAnimationParamsToZero():
+	animation_tree.set("parameters/Attack/blend_amount", 0)
+	animation_tree.set("parameters/Run/blend_amount", 0)
+	animation_tree.set("parameters/J/blend_amount", 0)
+	animation_tree.set("parameters/Ju/blend_amount", 0)
+	animation_tree.set("parameters/Jum/blend_amount", 0)
+	animation_tree.set("parameters/Jump/blend_amount", 0)
+	animation_tree.set("parameters/Jumps/blend_amount", 0)
+	animation_tree.set("parameters/Strafe/blend_amount", 0)
+	animation_tree.set("parameters/Strafer/blend_amount", 0)
 
 func take_damage(amount:int) -> void:
 	if(health< amount):
