@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 DeckManager="*res://scripts/deck_manager.gd"
 AiDeckManager="*res://scripts/AI_deck_manager.gd"
+Global="*res://scripts/Global.gd"
 
 [display]
 

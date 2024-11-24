@@ -35,8 +35,15 @@ func _process(_delta: float) -> void:
 	if health <= 0:
 		#put up a game over menu maybe
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		
+		#var end_screen_scene = preload("res://scenes/EndScreen.tscn")
+		#var end_screen_instance = end_screen_scene.instantiate()
+		#get_tree().root.add_child(end_screen_instance)
+		#end_screen_instance.set_score()
 		self.queue_free()
-		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+		#get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+		get_tree().change_scene_to_file("res://scenes/EndScreen.tscn")
+		
 
 
 func _ready() -> void:
