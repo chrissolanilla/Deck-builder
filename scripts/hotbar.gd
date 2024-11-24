@@ -36,7 +36,8 @@ var score: int = 0
 
 func increase_score(amount: int) -> void:
 	score += amount
-	print("score number: " , score)
+	Global.score += amount 
+	print("score number: " , Global.score)
 	update_score_display()
 
 func update_score_display() -> void:

@@ -122,6 +122,7 @@ func take_damage(amount:int) -> void:
 			hotbar.increase_score(amount)
 	if(health ==0):
 		queue_free()
+		get_tree().change_scene_to_file("res://scenes/EndScreen.tscn")
 	
 func _on_area_3d_area_entered(area: Area3D) -> void:
 	if(area.name == "BulletArea"):

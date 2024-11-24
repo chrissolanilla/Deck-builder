@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3 uid="uid://cv4ljrsywy8go"]
+
+[ext_resource type="Script" path="res://scenes/end_screen.gd" id="1_20bs3"]
+[ext_resource type="Texture2D" uid="uid://dbcdojsn3di5f" path="res://assets/Background.webp" id="1_vtldu"]
+[ext_resource type="Script" path="res://scenes/texture_rect.gd" id="2_d46xw"]
+[ext_resource type="FontFile" uid="uid://bmk33nlgv6a8i" path="res://assets/PixelifySans-VariableFont_wght.ttf" id="3_fumyf"]
+
+[node name="EndScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 874.0
+offset_top = 522.0
+offset_right = 874.0
+offset_bottom = 522.0
+script = ExtResource("1_20bs3")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1186.0
+offset_top = -814.0
+offset_right = 1374.0
+offset_bottom = 886.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_vtldu")
+script = ExtResource("2_d46xw")
+
+[node name="CenterContainer" type="CenterContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 65.0
+offset_top = 92.0
+offset_right = -260.0
+offset_bottom = -236.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EndMenuContainer" type="VBoxContainer" parent="TextureRect/CenterContainer"]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="TextureRect/CenterContainer/EndMenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Retry"
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = -831.0
+offset_top = 131.0
+offset_right = 853.0
+offset_bottom = 371.0
+theme_override_fonts/font = ExtResource("3_fumyf")
+theme_override_font_sizes/font_size = 200
+text = "Score: 0"
+horizontal_alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="."]
+offset_left = -781.0
+offset_top = -520.0
+offset_right = 903.0
+offset_bottom = -280.0
+theme_override_fonts/font = ExtResource("3_fumyf")
+theme_override_font_sizes/font_size = 200
+text = "Game Over"
+horizontal_alignment = 1
