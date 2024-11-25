@@ -16,12 +16,15 @@ var canChangeState:bool= true
 @onready var animation_player: AnimationPlayer = $PlayerModel/AnimationPlayer
 @onready var nav_agent = $NavigationAgent3D
 @onready var player: CharacterBody3D = $"../Player"
+#var player = DeckManager.getPlayer()
 @onready var healthbar: ProgressBar = $SubViewport/Healthbar
 @onready var bullet = load("res://scenes/bullet.tscn")
 @onready var step: AudioStreamPlayer3D = $Step
 @onready var stepTimer: Timer = $stepTimer
 @onready var robot_body = $"PlayerModel/Robot_Skeleton/Skeleton3D/00Robot_Body_008"
 @onready var animation_tree: AnimationTree = $PlayerModel/AnimationTree
+var recursionCard = ResourceLoader.load("res://assets/cards/MetaData/recursion_monster.tres")
+
 var instance
 var draw_timer: Timer
 var action_timer: Timer
@@ -190,21 +193,31 @@ func _on_action_timer_timeout() -> void:
 
 # Function to play a monster card
 func play_monster_card(card: CardMetaData) -> void:
-	var monster_script = load(card.script_path)
-	if monster_script != null:
-		var monster_instance = monster_script.new()
-		monster_instance.setupAttributes(card)
-		var current_scene = get_tree().root.get_child(1)
-		if current_scene:
-			monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))
-		print("AI played monster card: ", card.card_name)
+	if card.card_name == "RecursionMonster":
+		var monster_script = load(card.script_path)
+		if monster_script != null:
+			var monster_instance = monster_script.new()
+			#monster_instance.setupAttributes(card)
+			var current_scene = get_tree().root.get_child(3).get_child(1)
+			if current_scene:
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))
+			print("AI played monster card: ", card.card_name)
+	else: 
+		var monster_script = load(card.script_path)
+		if monster_script != null:
+			var monster_instance = monster_script.new()
+			monster_instance.setupAttributes(card)
+			var current_scene = get_tree().root.get_child(1)
+			if current_scene:
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))
+			print("AI played monster card: ", card.card_name)
 
 # Function to play a spell card
 func play_spell_card(card: CardMetaData) -> void:
 	if AiDeckManager.getIfSpellActive():
 		print("AI cannot play spell, one is already active.")
 		return
-
+		#spawn robot in the navigation region
 	var spell_script = load(card.script_path)
 	if spell_script != null:
 		var spell_instance = spell_script.new()
@@ -396,3 +409,51 @@ func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 func _on_step_timer_timeout() -> void:
 	step.play()
 	pass # Replace with function body.
+
+
+func playRecursion():
+	play_monster_card(recursionCard)
+	pass
+
+var level: int
+#var attack: int
+var defense: int
+var archetype: String
+var monster_name: String
+var scene_path: String = "res://scenes/robot.tscn"
+
+func setupAttributes(metadata:CardMetaData) -> void:
+	self.level = metadata.level
+	self.attack = metadata.card_attack
+	self.defense = metadata.card_hp
+	self.archetype = metadata.archetype
+	self.monster_name = metadata.card_name
+	self.scene_path = metadata.scene_path
+func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scale: Vector3 = Vector3(1, 1, 1)) -> void:
+	# Load the scene and check if it's a valid PackedScene
+	var monster_scene = load(scene_path)
+	if monster_scene == null:
+		print("Failed to load monster scene!")
+		return
+	if not monster_scene is PackedScene:
+		print("Loaded resource is not a valid PackedScene!")
+		return
+	# Instance the monster from the PackedScene
+	var monster = monster_scene.instantiate()
+	if monster == null:
+		print("Failed to instance monster!")
+		return
+	# Add the monster to the current scene before modifying its transform
+	if current_scene != null:
+		current_scene.add_child(monster)
+		print("Spawned monster: " + monster_name)
+	else:
+		print("No valid scene to spawn the monster!")
+		return
+
+	print("our attributes for this monster are", level, attack, defense)
+	# Defer setting the transform to avoid the "is_inside_tree()" error
+	monster.call_deferred("set_transform", Transform3D(monster.transform.basis, player.get_global_transform().origin + player.get_global_transform().basis.z.normalized() * -distance))
+
+	# Apply the scale after the monster is added to the scene
+	monster.scale = scale
