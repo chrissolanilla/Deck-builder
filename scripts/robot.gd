@@ -27,7 +27,7 @@ var draw_timer: Timer
 var action_timer: Timer
 var attack_timer: Timer
 var attack= 20
-enum State { APPROACH, MELEE, STRAFE, LOW_HEALTH, TARGET_LOW_HEALTH, JUMP }
+enum State { APPROACH, MELEE, STRAFE, LOW_HEALTH, TARGET_LOW_HEALTH, JUMP, RETREAT }
 var state = State.APPROACH
 #walking animation name is xxx_001-noexp
 var attack_range = 2.0
@@ -56,7 +56,7 @@ func _ready() -> void:
 	# Set up timer for playing cards
 	action_timer = Timer.new()
 	add_child(action_timer)
-	action_timer.wait_time = 5
+	action_timer.wait_time = 3
 	action_timer.connect("timeout", Callable(self, "_on_action_timer_timeout"))
 	action_timer.start()
 
@@ -75,8 +75,8 @@ func _physics_process(delta):
 	#but it wont deal me damage until i ledave the attack range
 	elif _target_in_range() and canChangeState:
 		state = State.MELEE
-	elif health>50 and !disoriented:
-		state = State.APPROACH
+	# elif health>50 and !disoriented:
+	# 	state = State.APPROACH
 
 	if canChangeState:
 		match state:
@@ -142,28 +142,38 @@ func _on_attack_timer_timeout()  -> void:
 
 	shoot.play()
 	stepTimer.start()
+	state = State.APPROACH
 
 # Timer callback to attempt to play a card
 #we should check our state though and prioritize to play a card in our hand like heal if low health.
-func _on_action_timer_timeout() -> void:
-	if AiDeckManager.getIfSpellActive():
-		print("spell is still active")
-		return
-
-	if hand.size() == 0:
-		print("AI has no cards to play.")
-		return
+func randomState() -> void:
 	# Select cards based on current state
-	var selected_card
-	match state:
-		State.LOW_HEALTH:
-			selected_card = find_card_by_type("heal")
-		State.TARGET_LOW_HEALTH:
-			selected_card = find_card_by_type("attack")
-		_:
-			selected_card = hand[randi() % hand.size()]  # Default to random card
+	if health >=50:
+		var next_state = randi() %4
+		match next_state:
+			0:
+				state = State.APPROACH
+			1:
+				state = State.STRAFE
+			2:
+				state = State.JUMP
+			3:
+				state = State.RETREAT
 
-	if selected_card:
+		play_cards()
+
+func play_cards():
+	var selected_card
+	if hand.size() >0:
+
+		match state:
+			State.LOW_HEALTH:
+				selected_card = find_card_by_type("heal")
+			State.TARGET_LOW_HEALTH:
+				selected_card = find_card_by_type("attack")
+			_:
+				selected_card = hand[randi() % hand.size()]  # Default to random card
+	if hand.size() > 0 and !AiDeckManager.getIfSpellActive() and selected_card:
 		match selected_card.card_type:
 			"monster":
 				play_monster_card(selected_card)
@@ -171,8 +181,8 @@ func _on_action_timer_timeout() -> void:
 				play_spell_card(selected_card)
 		hand.erase(selected_card)  # Remove card from hand after playing
 
-	# Remove the card from the hand after playing
-	#hand.remove_at(random_index)
+func _on_action_timer_timeout() -> void:
+	randomState()
 
 # Function to play a monster card
 func play_monster_card(card: CardMetaData) -> void:
@@ -220,8 +230,6 @@ func melee_attack():
 	attack_timer.start()
 	setAnimationParamsToZero()
 	animation_tree.set("parameters/Attack/blend_amount", 1)
-	animation_tree.advance_expression_base_node
-	animation_tree.reset_physics_interpolation()
 
 func strafe():
 	# Play strafing animations and adjust velocity for actual movement
@@ -259,26 +267,30 @@ func target_low_health_behavior():
 
 func jump_behavior():
 	if jump_stage == 0 and is_on_floor():
-		animation_player.play("jump_1_up")
-		#animatin_finished is a signal? do i have to connect it or something and have a _on_finsihed funciton?
-		await animation_player.animation_finished
+		var direction_to_player = (player.global_transform.origin - global_transform.origin).normalized()
+		velocity = direction_to_player * speed  # Apply horizontal speed towards the player
+		velocity.y = 10  # Initial vertical jump velocity
+		set_jump_animation("J")  # Start jump animation
 		jump_stage = 1
 	elif jump_stage == 1:
-		animation_player.play("jump_2_upwards")
-		await animation_player.animation_finished
-		jump_stage = 2
+		if velocity.y > 0:  # Moving upward
+			set_jump_animation("Ju")
+			jump_stage = 2
 	elif jump_stage == 2:
-		animation_player.play("jump_3_midair")
-		await animation_player.animation_finished
-		jump_stage = 3
+		if velocity.y <= 0:  # At peak or falling
+			set_jump_animation("Jum")
+			jump_stage = 3
 	elif jump_stage == 3:
-		animation_player.play("jump_4_falling")
-		await animation_player.animation_finished
-		jump_stage = 4
-	elif jump_stage == 4:
-		animation_player.play("jump_5_hardlanding")
-		await animation_player.animation_finished
-		jump_stage = 0  # Reset jump cycle
+		if !is_on_floor():  # Falling
+			set_jump_animation("Jump")
+		elif is_on_floor():  # Landed
+			set_jump_animation("Jumps")  # Hard landing
+			jump_stage = 0  # Reset the jump stage after landing
+
+func set_jump_animation(animation_name: String):
+	setAnimationParamsToZero()
+	animation_tree.set("parameters/%s/blend_amount" % animation_name, 1)
+
 
 func find_card_by_type(card_type: String) -> CardMetaData:
 	for card in hand:
