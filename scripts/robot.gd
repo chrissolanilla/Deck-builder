@@ -64,6 +64,8 @@ func _ready() -> void:
 func _physics_process(delta):
 	to_player = player.global_transform.origin - global_transform.origin
 	perpendicular_dir = to_player.cross(Vector3.UP).normalized()  # Perpendicular to player direction
+	look_at(player.global_transform.origin, Vector3.UP)
+	rotation.y += PI  # Face the player
 	#switch state to attack if in range
 	#should i be using an enum for state so it can have multiple states at a time?
 	#not sure if having multiple states at a time is good for a state machine or finite one.
