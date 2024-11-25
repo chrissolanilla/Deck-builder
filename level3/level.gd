@@ -16,4 +16,5 @@ func _process(delta: float) -> void:
 	if !player:
 		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
 	if !robot:
+		print("changing level")
 		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")

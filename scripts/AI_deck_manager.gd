@@ -13,6 +13,7 @@ var cardInstance
 var navAgent: NavigationRegion3D
 
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
+var currentRobots:Array[CharacterBody3D] = []
 
 func setNavAgent(nav:NavigationRegion3D)-> void:
 	navAgent = nav
@@ -147,3 +148,6 @@ func _process(delta: float) -> void:
 			current_spell.queue_free()  # Free the spell instance after it resolves
 			cardInstance.queue_free()
 			
+			
+
+	

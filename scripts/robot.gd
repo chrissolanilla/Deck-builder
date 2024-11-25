@@ -10,6 +10,7 @@ var strafe_stage = 0
 var to_player
 var perpendicular_dir
 var canChangeState:bool= true
+var recursionLevel=1
 @onready var shoot: AudioStreamPlayer3D = $Shoot
 @onready var sprite_3d: Sprite3D = $Sprite3D
 @onready var skeleton_3d: Skeleton3D = $PlayerModel/Robot_Skeleton/Skeleton3D
@@ -35,8 +36,13 @@ var state = State.APPROACH
 #walking animation name is xxx_001-noexp
 var attack_range = 2.0
 var disoriented: bool = false
+var recursionPlayCount: float = 0
 
 func _ready() -> void:
+	if self.name == "Robot":
+		print("MY NAME IS ROBOT")
+		DeckManager.setFirstRobot(self)
+	print("recursion count is", recursionLevel)
 	to_player = player.global_transform.origin - global_transform.origin
 	perpendicular_dir = to_player.cross(Vector3.UP).normalized()  # Perpendicular to player direction
 	deck = AiDeckManager.preload_ai_deck(deck)
@@ -65,6 +71,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta):
+	healthbar.value = health
+	if recursionLevel <= 0.1:
+		queue_free()
 	to_player = player.global_transform.origin - global_transform.origin
 	perpendicular_dir = to_player.cross(Vector3.UP).normalized()  # Perpendicular to player direction
 	look_at(player.global_transform.origin, Vector3.UP)
@@ -132,7 +141,11 @@ func take_damage(amount:int) -> void:
 
 func _on_area_3d_area_entered(area: Area3D) -> void:
 	if(area.name == "BulletArea"):
-		take_damage(2)
+		if recursionLevel <0.8:
+			print("hit recursive robot")
+			take_damage(10)
+		else:
+			take_damage(2)
 
 # Timer callback to draw a card
 func _on_draw_timer_timeout() -> void:
@@ -200,7 +213,15 @@ func play_monster_card(card: CardMetaData) -> void:
 			#monster_instance.setupAttributes(card)
 			var current_scene = get_tree().root.get_child(3).get_child(1)
 			if current_scene:
-				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1))
+				recursionLevel-=0.2
+				monster_instance.spawnMonster(self, current_scene, 5.0, Vector3(0.1, 0.1, 0.1), recursionLevel-recursionPlayCount)
+				DeckManager.addRobot(monster_instance)
+				recursionPlayCount+=0.1
+				monster_instance.attack = 20*recursionLevel
+				monster_instance.health = 100*recursionLevel
+				monster_instance.recursionLevel = recursionLevel
+				print("passing in recursion level as : " , recursionLevel)
+				monster_instance.nerfSelf(recursionLevel)
 			print("AI played monster card: ", card.card_name)
 	else: 
 		var monster_script = load(card.script_path)
@@ -275,14 +296,14 @@ func melee_attack():
 func strafe():
 	# Play strafing animations and adjust velocity for actual movement
 	if strafe_stage == 0:
-		print("STRAFE STAGE IS 0")
+		#print("STRAFE STAGE IS 0")
 
 		setAnimationParamsToZero()
 		animation_tree.set("parameters/Strafe/blend_amount", 1)
 		velocity = -perpendicular_dir * speed  # Move left relative to player
 
 	elif strafe_stage == 1:
-		print("STRAFE STAGE IS 1")
+		#print("STRAFE STAGE IS 1")
 		setAnimationParamsToZero()
 		animation_tree.set("parameters/Strafer/blend_amount", 1)
 		velocity = perpendicular_dir * speed  # Move right relative to player
@@ -429,8 +450,14 @@ func setupAttributes(metadata:CardMetaData) -> void:
 	self.archetype = metadata.archetype
 	self.monster_name = metadata.card_name
 	self.scene_path = metadata.scene_path
-func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scale: Vector3 = Vector3(1, 1, 1)) -> void:
+func spawnMonster( player: Node, current_scene: Node, distance: float = 5.0, scale: Vector3 = Vector3(1, 1, 1), recursion_level:float=1,) -> void:
 	# Load the scene and check if it's a valid PackedScene
+	self.health = recursion_level*100
+	self.attack = recursion_level*20
+	var cards_to_remove = min(self.deck.size(), int(recursion_level))  # Remove up to `recursion_level` cards, but not more than the deck size
+	for i in range(cards_to_remove):
+		self.deck.pop_back() 
+	self.recursionLevel-=0.2
 	var monster_scene = load(scene_path)
 	if monster_scene == null:
 		print("Failed to load monster scene!")
@@ -457,3 +484,13 @@ func spawnMonster(player: Node, current_scene: Node, distance: float = 5.0, scal
 
 	# Apply the scale after the monster is added to the scene
 	monster.scale = scale
+	
+func nerfSelf(recursion_level:float):
+		health = 100*recursion_level
+		recursionLevel-= 0.3
+		attack = 20*recursionLevel
+		print("after nerfing our health is: ", self.health)
+		print("after nerfing our recursion level is: ", self.recursionLevel)
+		var cards_to_remove = min(self.deck.size(), int(recursion_level))  # Remove up to `recursion_level` cards, but not more than the deck size
+		for i in range(cards_to_remove):
+			deck.pop_back() 

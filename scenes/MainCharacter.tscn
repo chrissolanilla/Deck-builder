@@ -42,4 +42,8 @@ offset_bottom = 531.0
 scale = Vector2(1.00163, 1)
 show_percentage = true
 
+[node name="getRobots" type="Timer" parent="."]
+autostart = true
+
 [connection signal="timeout" from="Camera3D/Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="getRobots" to="." method="_on_get_robots_timeout"]

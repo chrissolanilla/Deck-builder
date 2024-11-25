@@ -8,7 +8,12 @@ var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
 var enemyLocal: CharacterBody3D
+var first_robot: CharacterBody3D
 var all_robots: Array[CharacterBody3D]= []
+
+
+func setFirstRobot(char:CharacterBody3D):
+	first_robot = char
 
 var negated: bool = false
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
@@ -37,6 +42,8 @@ func addCardToHand(card: CardMetaData):
 	if deck.has(card):
 		hand.push_back(card)
 
+func set_first_robot(char:CharacterBody3D):
+	first_robot = char
 # Draw a single card from the deck and return it
 func draw_card() -> CardMetaData:
 	if deck.size() > 0:
@@ -150,3 +157,8 @@ func _process(delta: float) -> void:
 
 
 # Add this new function to update robots dynamically
+func addRobot(instance):
+	all_robots.append(instance)
+	
+func getRobots():
+	return all_robots

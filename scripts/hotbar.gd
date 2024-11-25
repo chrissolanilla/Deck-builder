@@ -43,7 +43,7 @@ func increase_score(amount: int) -> void:
 func update_score_display() -> void:
 	# Access the Label node inside Score slot
 	score_label = $HBoxContainer.get_child(7).get_child(0)
-	print("score: " , score_label)
+	#print("score: " , score_label)
 	score_label.text = "Score: " + str(score)
 	if score_label == null:
 		print("Error: Label node in Score_slot not found!")

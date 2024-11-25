@@ -24,6 +24,11 @@ var rifle: Node3D
 var rifle_anim: AnimationPlayer
 var rifle_barrel:RayCast3D
 var disoriented:bool
+@onready var robot_first: CharacterBody3D = $"../Robot"
+var robots:Array[CharacterBody3D] = []
+@onready var get_robots: Timer = $getRobots
+@onready var first_robot: CharacterBody3D = $"../Robot"
+
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleMouse"):
@@ -47,6 +52,8 @@ func _process(_delta: float) -> void:
 
 
 func _ready() -> void:
+	
+	robots.append(first_robot)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	card_container = get_parent().get_node("CardContainer")
 	#on ready we load the deck from the game file
@@ -230,3 +237,9 @@ func _on_wobble_timeout() -> void:
 func _on_timer_timeout() -> void:
 	$Camera3D.isHit = false
 	pass # Replace with function body.
+
+
+func _on_get_robots_timeout() -> void:
+	robots = DeckManager.getRobots()
+	print("our robots are: ", robots)
+	
