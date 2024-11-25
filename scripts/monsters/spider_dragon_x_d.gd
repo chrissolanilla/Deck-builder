@@ -25,7 +25,7 @@ func _ready() -> void:
 		print("I am on team player")
 	else:
 		team = "robot"
-		target = DeckManager.getPlayer()
+		target = DeckManager.enemyLocal
 		print("I am on team robot")
 
 func _physics_process(delta: float) -> void:

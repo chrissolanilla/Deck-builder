@@ -34,7 +34,7 @@ func _ready():
 		return
 	if parent.name =="DeckManager":
 		team = "player"
-		target = AiDeckManager.getPlayer()
+		target = DeckManager.enemyLocal
 		print("target is: ", target)
 	else:
 		team = "robot"

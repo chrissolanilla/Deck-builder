@@ -163,7 +163,7 @@ func select_card_by_index(index: int) -> void:
 				return
 			var spell_instance = spell_script.new()
 			var current_scene = get_tree().root.get_child(0)
-			spell_instance.activate_spell(self, enemy, selected_card, current_scene, 5.0, Vector3(1,1,1))
+			spell_instance.activate_spell(self, DeckManager.enemyLocal, selected_card, current_scene, 5.0, Vector3(1,1,1))
 			#spell_instance.resolve_spell(self, enemy)
 			spell_instance.setupAttributes(selected_card)
 

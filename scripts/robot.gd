@@ -71,6 +71,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta):
+	print("our state rn is ", state)
 	healthbar.value = health
 	if recursionLevel <= 0.1:
 		queue_free()
@@ -84,7 +85,8 @@ func _physics_process(delta):
 	if !is_on_floor():
 		velocity += get_gravity() * delta
 	if health < 50 and state != State.LOW_HEALTH and canChangeState:
-		state = State.LOW_HEALTH
+		#low_health_behavior()
+		pass
 	#if i am in melee range for an extended period of time, it wont keep repeating his attack animation
 	#but it wont deal me damage until i ledave the attack range
 	elif _target_in_range() and canChangeState:
@@ -105,13 +107,13 @@ func _physics_process(delta):
 				animation_tree.set("parameters/Attack/blend_amount", 1)
 			State.STRAFE:
 				strafe()
-			State.LOW_HEALTH:
-				low_health_behavior()
 			State.TARGET_LOW_HEALTH:
 				target_low_health_behavior()
 			State.JUMP:
 				stepTimer.stop()
 				jump_behavior()
+			State.RETREAT:
+				retreat_from_player()
 	move_and_slide()
 
 func setAnimationParamsToZero():
@@ -146,6 +148,8 @@ func _on_area_3d_area_entered(area: Area3D) -> void:
 			take_damage(10)
 		else:
 			take_damage(2)
+	
+		DeckManager.enemyLocal = self
 
 # Timer callback to draw a card
 func _on_draw_timer_timeout() -> void:
@@ -285,6 +289,26 @@ func approach_player():
 	look_at(player.global_transform.origin, Vector3.UP)
 	rotation.y += PI  # Face the player
 
+func retreat_from_player():
+	velocity = Vector3.ZERO
+
+	# Calculate the direction vector pointing away from the player
+	var direction_away = (global_transform.origin - player.global_transform.origin).normalized()
+
+	# Set a new target position away from the player using NavigationAgent
+	var retreat_target = global_transform.origin + (direction_away * speed * 2)  # Move farther away (adjust multiplier as needed)
+	nav_agent.set_target_position(retreat_target)
+	var next_nav_point = nav_agent.get_next_path_position()
+
+	# Calculate velocity away from the player
+	velocity = (next_nav_point - global_transform.origin).normalized() * speed
+	move_and_slide()
+
+	# Look away from the player
+	look_at(player.global_transform.origin, Vector3.UP)
+	rotation.y += PI  # Reverse to face away from the player
+
+
 func melee_attack():
 	canChangeState = false
 	if !attack_timer.is_stopped():
@@ -315,14 +339,7 @@ func low_health_behavior():
 		play_spell_card(healing_card)
 		hand.erase(healing_card)
 		return  # Exit after playing a healing card
-	 # Randomly decide to jump or strafe
-	if randi() % 3 == 0:  # Roughly 1 in 3 chance to jump
-		state = State.JUMP
-	else:
-		strafe()  # Default to strafing if not jumping
-	# If no healing card is available, initiate strafing behavior
-	strafe()  # Call the strafe function for dodging
-
+		
 func target_low_health_behavior():
 	# Implement aggressive targeting behavior here
 	pass

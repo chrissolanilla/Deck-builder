@@ -13,8 +13,9 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
+	
 	if !player:
 		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
-	if !robot:
+	if !robot and DeckManager.all_robots.size() <1:
 		print("changing level")
 		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
