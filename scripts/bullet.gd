@@ -25,5 +25,6 @@ func _on_timer_timeout() -> void:
 #TODO
 #this code didnt work cause the bullet would go through the robot for some reason TODO!!!!
 func _on_area_3d_body_entered(body: Node3D) -> void:
+	var damage = DeckManager.getAttack()
 	if body.has_method("take_damage"):
-		body.take_damage(20)
+		body.take_damage(damage)

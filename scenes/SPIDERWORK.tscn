@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=4 uid="uid://rdxeoudgjptu"]
+[gd_scene load_steps=17 format=4 uid="uid://rdxeoudgjptu"]
 
 [ext_resource type="Script" path="res://scripts/card_effects/cursed_scarab.gd" id="1_m8kmq"]
 [ext_resource type="Texture2D" uid="uid://bascr8qkua4ig" path="res://Spider01.png" id="2_kmnr4"]
+[ext_resource type="PackedScene" uid="uid://bdg0cdj3obokk" path="res://scenes/healthbar.tscn" id="3_t1clr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j7pcr"]
 albedo_texture = ExtResource("2_kmnr4")
@@ -1233,6 +1234,9 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_q4hg1"]
 radius = 4.5
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_c88ts"]
+viewport_path = NodePath("SubViewport")
+
 [node name="Node3D" type="CharacterBody3D"]
 transform = Transform3D(0.468, 0, 0, 0, 0.468, 0, 0, 0, 0.468, 0, 0, 0)
 script = ExtResource("1_m8kmq")
@@ -1417,3 +1421,14 @@ libraries = {
 shape = SubResource("SphereShape3D_q4hg1")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+
+[node name="Healthbar" parent="SubViewport" instance=ExtResource("3_t1clr")]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.13975, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_c88ts")

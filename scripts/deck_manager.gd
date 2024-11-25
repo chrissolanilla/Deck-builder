@@ -12,7 +12,8 @@ var enemyLocal: CharacterBody3D
 var negated: bool = false
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
 var cardInstance
-
+func getAttack()-> int:
+	return playerLocal.attack
 func getPlayer()-> CharacterBody3D:
 	return playerLocal
 	

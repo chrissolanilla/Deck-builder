@@ -13,6 +13,7 @@ var move_speed:float = 3.0
 var gravity:float = -9.8
 var parent
 var team: String
+var health:int =  30
 # Time in seconds between direction changes
 var direction_change_interval:float = 2.0
 var time_since_direction_change:float = 0.0
@@ -20,6 +21,7 @@ var time_since_direction_change:float = 0.0
 var attack_range = 3.2
 var current_direction = Vector3.ZERO
 var debug =0
+@onready var healthbar: ProgressBar = $SubViewport/Healthbar
 func _ready():
 
 	print("Cursed Scarab ready!")
@@ -106,3 +108,10 @@ func disorient(duration: float) -> void:
 func _on_disorient_timeout() -> void:
 	disoriented = false
 	print("spider done with this shit")
+
+
+func take_damage(amount: int) -> void:
+	health -= min(amount, health)
+	healthbar.value = health
+	if health == 0:
+		queue_free()
