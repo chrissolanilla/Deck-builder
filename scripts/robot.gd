@@ -98,6 +98,7 @@ func _physics_process(delta):
 			State.TARGET_LOW_HEALTH:
 				target_low_health_behavior()
 			State.JUMP:
+				stepTimer.stop()
 				jump_behavior()
 	move_and_slide()
 
@@ -149,6 +150,7 @@ func _on_attack_timer_timeout()  -> void:
 # Timer callback to attempt to play a card
 #we should check our state though and prioritize to play a card in our hand like heal if low health.
 func randomState() -> void:
+	stepTimer.start()
 	# Select cards based on current state
 	if health >=50:
 		var next_state = randi() %4
