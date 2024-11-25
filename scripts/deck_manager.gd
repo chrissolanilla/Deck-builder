@@ -8,6 +8,7 @@ var countdown_time: float = 0
 var current_spell: BaseSpell
 var playerLocal: CharacterBody3D
 var enemyLocal: CharacterBody3D
+var all_robots: Array[CharacterBody3D]= []
 
 var negated: bool = false
 const DEFAULT_CARD = preload("res://assets/cards/portraits/defaultCard.png")
@@ -145,3 +146,7 @@ func _process(delta: float) -> void:
 			# Free resources after resolution or timeout
 	else:
 		is_spell_active = false  # Ensure it's false if no spell is active or countdown is over
+
+
+
+# Add this new function to update robots dynamically

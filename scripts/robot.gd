@@ -214,6 +214,30 @@ func play_spell_card(card: CardMetaData) -> void:
 			#spell_instance.resolve_spell(self, player)
 			spell_instance.setupAttributes(card)
 		print("AI played spell card: ", card.card_name)
+		
+		
+#somehow make the spell spawn the robot in the get_world_tree but in the map node or something. 
+#func play_spell_card(card: CardMetaData) -> void:
+	#if AiDeckManager.getIfSpellActive():
+		#print("AI cannot play spell, one is already active.")
+		#return
+#
+	#var spell_script = load(card.script_path)
+	#if spell_script != null:
+		## Instance the spell
+		#var spell_instance = spell_script.new()
+		#spell_instance.setupAttributes(card)
+#
+		## Set up the current scene and activate the spell
+		#var current_scene = get_tree().root.get_child(1)  # Adjust this if necessary
+		#if current_scene:
+			#spell_instance.activate_spell(self, player, card, current_scene, 5.0, Vector3(1, 1, 1))
+#
+			## Resolve the spell effect if it's RecursionSpell
+			#if spell_instance is RecursionSpell:
+				#spell_instance.resolve_spell(self, player)
+#
+		#print("AI played spell card: ", card.card_name)
 
 func _target_in_range():
 	return global_position.distance_to(player.global_position) < attack_range
