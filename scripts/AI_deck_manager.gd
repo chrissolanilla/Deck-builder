@@ -32,10 +32,12 @@ func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 		"res://assets/cards/MetaData/recursion.tres",
 		"res://assets/cards/MetaData/recursion.tres",
 		"res://assets/cards/MetaData/recursion.tres",
+		"res://assets/cards/MetaData/recursion.tres",
+		"res://assets/cards/MetaData/recursion.tres",
 		"res://assets/cards/MetaData/Heal.tres",
 		"res://assets/cards/MetaData/Rage.tres",
 		"res://assets/cards/MetaData/Sandstorm_Barrage.tres",
-		"res://assets/cards/MetaData/counter_spell.tres"
+		#"res://assets/cards/MetaData/counter_spell.tres"
 	]
 	#add each card in his deck list 3 times. 
 	for card in cards:
@@ -45,6 +47,10 @@ func preload_ai_deck(deckParam:Array[CardMetaData]) -> Array[CardMetaData]:
 		deckParam.append(card)
 		deckParam.append(card)
 		
+		
+	for card in deckParam:
+		print("robot card deck: ", card.card_name)
+	deckParam.shuffle()
 	return deckParam
 		
 

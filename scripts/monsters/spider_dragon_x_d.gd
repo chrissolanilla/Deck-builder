@@ -32,6 +32,8 @@ func _physics_process(delta: float) -> void:
 	# Update direction towards target
 	print("object9 position is: " ,object_9.position)
 	print("global position is: ", global_position)
+	if target == null:
+		target = DeckManager.enemyLocal
 	var direction = (target.global_transform.origin - global_transform.origin).normalized()
 
 	# Maintain consistent flying height when in "approach" state

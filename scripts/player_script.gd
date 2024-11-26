@@ -11,7 +11,7 @@ var wobble_intensity = 0.05  # How strong the wobble is
 var wobble_frequency = 5.0  # Frequency of the wobble effect (how fast it oscillates)
 var wobble_elapsed_time = 0.0
 var health = 100
-var attack = 20
+var attack = 2
 var card_container;
 var deck: Array[CardMetaData]
 var hand: Array[CardMetaData]
